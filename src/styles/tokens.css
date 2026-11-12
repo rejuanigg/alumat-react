@@ -18,6 +18,7 @@
   --color-surface-soft: #e0eefc;       /* fondos azulados suaves */
   --color-surface-highlight: #d4e6fb;  /* fila "Saldo actual" */
   --color-border: #e3eaf5;
+  --color-input-border: #7489a8;       /* borde de campos: 3.57:1 sobre blanco (WCAG 1.4.11) */
   --color-grid: #dbe4f2;               /* líneas de gráficos */
 
   /* ── Texto ────────────────────────────────────────────────────── */
