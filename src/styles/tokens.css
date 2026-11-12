@@ -32,6 +32,7 @@
   --color-success-text: #167837;       /* texto sobre --color-success-bg (4.71:1) */
   --color-danger: #c0262d;             /* inactivo / eliminar */
   --color-danger-bg: #fbdcdc;
+  --color-danger-hover: #a01f25;       /* hover de botones de peligro (blanco 7.73:1) */
   --color-warning: #d9701a;            /* pendiente / saldo */
   --color-warning-bg: #fde7d3;
   --color-warning-text: #a15313;       /* texto sobre --color-warning-bg (4.66:1) */
@@ -124,4 +125,27 @@
   --sidebar-bg: linear-gradient(180deg, var(--color-sidebar-start), var(--color-sidebar-end));
   /* Con 0.2 el texto blanco mantiene ≥ 4.82:1 en el peor punto de la imagen. */
   --sidebar-image-opacity: 0.2;
+
+  /* ── Componentes ──────────────────────────────────────────────── */
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+
+  --color-overlay: rgba(11, 31, 63, 0.55);           /* fondo detrás de modales y del menú móvil */
+  --color-table-row-alt: var(--color-bg);            /* filas alternadas */
+  --color-table-row-hover: var(--color-surface-soft);
+  --opacity-disabled: 0.55;
+  --duration-fast: 150ms;
+
+  --menu-min-width: 180px;       /* menú desplegable del usuario */
+  --modal-width: 440px;
+  --search-min-width: 240px;
+  --card-min-width: 240px;       /* ancho mínimo de cards y StatCards en grillas */
+
+  --z-dropdown: 30;
+  --z-sidebar-backdrop: 35;
+  --z-sidebar: 40;
+
+  /* Referencia: var() no funciona en media queries. Usar este valor a mano. */
+  --breakpoint-md: 960px;
 }
