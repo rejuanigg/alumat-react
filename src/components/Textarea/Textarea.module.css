@@ -1,8 +1,5 @@
+/* Se combina con .control e .invalid de Input.module.css (ver el JSX). */
 .textarea {
-  composes: control from '../Input/Input.module.css';
   resize: vertical;
 }
 
-.invalid {
-  composes: invalid from '../Input/Input.module.css';
-}

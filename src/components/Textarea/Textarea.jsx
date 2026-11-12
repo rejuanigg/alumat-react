@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cx } from '../_utils/cx.js'
+import inputStyles from '../Input/Input.module.css'
 import styles from './Textarea.module.css'
 
 /** Texto de varias líneas. `invalid` (o aria-invalid) muestra el estilo de error. */
@@ -9,7 +10,7 @@ const Textarea = forwardRef(function Textarea({ invalid, rows = 4, className, ..
     <textarea
       ref={ref}
       rows={rows}
-      className={cx(styles.textarea, esInvalido && styles.invalid, className)}
+      className={cx(inputStyles.control, styles.textarea, esInvalido && inputStyles.invalid, className)}
       {...rest}
       aria-invalid={esInvalido || undefined}
     />
