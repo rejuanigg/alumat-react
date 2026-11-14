@@ -1,3 +1,5 @@
+import Header from '../components/Header/Header.jsx';
+import Sidebar from '../components/Sidebar/Sidebar.jsx';
 import { Download, Pencil, Plus, Save, Star, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import {
@@ -34,6 +36,8 @@ const SECCIONES = [
   { id: 'badge', titulo: 'Badge y StatusTag' },
   { id: 'campos', titulo: 'Input, Select y Textarea' },
   { id: 'form-field', titulo: 'FormField' },
+  { id: 'sidebar', titulo: 'Sidebar' },
+  { id: 'header', titulo: 'Header' },
 ];
 
 function Seccion({ id, titulo, descripcion, children }) {
@@ -401,6 +405,40 @@ export default function ComponentsPreview() {
           </FormField>
         </div>
         <FormularioEjemplo />
+      </Seccion>
+      <Seccion
+        id="sidebar"
+        titulo="Sidebar"
+        descripcion="Menú lateral con marca, íconos y estado activo según la ruta."
+      >
+        <Sidebar
+          items={[
+            { to: '/componentes', label: 'Componentes (activo)' },
+            { to: '/clientes', label: 'Clientes' },
+          ]}
+        />
+        <Seccion
+          id="header"
+          titulo="Header"
+          descripcion="Campana con notificación, usuario, rol y opciones desplegables."
+        >
+          <Header
+            userName="Valentina"
+            role="Administración"
+            hasNotifications
+            onNotifications={accion('Abrir notificaciones')}
+            actions={[
+              { label: 'Mi perfil', onClick: accion('Abrir perfil') },
+              {
+                label: 'Cerrar sesión',
+                onClick: accion('Cerrar sesión (demo)'),
+              },
+            ]}
+          />
+          <p role="status" className={styles.status}>
+            Última acción: {ultimaAccion}
+          </p>
+        </Seccion>
       </Seccion>
     </main>
   );
