@@ -14,7 +14,15 @@ function Inicio() {
     </main>
   );
 }
-
+function PaginaPendiente({ titulo }) {
+  return (
+    <main className="app-placeholder">
+      <h1>{titulo}</h1>
+      <p>Pantalla en desarrollo.</p>
+      <Link to="/">Volver al inicio</Link>
+    </main>
+  );
+}
 function NoEncontrada() {
   return (
     <main className="app-placeholder">
@@ -34,6 +42,21 @@ function App() {
         {/* Páginas temporales de revisión */}
         <Route path="/tokens" element={<TokensPreview />} />
         <Route path="/componentes" element={<ComponentsPreview />} />
+        <Route
+          path="/clientes"
+          element={<PaginaPendiente titulo="Clientes" />}
+        />
+        <Route
+          path="/productos"
+          element={<PaginaPendiente titulo="Productos" />}
+        />
+        <Route path="/disenos" element={<PaginaPendiente titulo="Diseños" />} />
+        <Route path="/pedidos" element={<PaginaPendiente titulo="Pedidos" />} />
+        <Route
+          path="/ventas-cobros"
+          element={<PaginaPendiente titulo="Ventas y cobros" />}
+        />
+        <Route path="/cajas" element={<PaginaPendiente titulo="Cajas" />} />
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
     </BrowserRouter>

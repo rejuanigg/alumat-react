@@ -256,9 +256,9 @@ Los íconos de `lucide-react` no reciben `size` en el JSX: el tamaño lo pone el
 
 ### Fondo del sidebar
 
-La clase `.sidebar` (en `global.css`) combina el degradé `--sidebar-bg` con la imagen del edificio de vidrio, **`src/edificio_sin_fondo.png`**. La imagen va en un `::before`, anclada abajo (`bottom center`, `cover`, sin repetir) y con opacidad `--sidebar-image-opacity`. El contenido del sidebar queda por encima.
+La clase `.sidebar` (en `global.css`) combina el degradé `--sidebar-bg` con la imagen del edificio de vidrio, **`src/edificio_sin_fondo.webp`**. La imagen va en un `::before`, anclada abajo (`bottom center`, `cover`, sin repetir) y con opacidad `--sidebar-image-opacity`. El contenido del sidebar queda por encima.
 
-La imagen se referencia con una ruta relativa desde el CSS (`url('../edificio_sin_fondo.png')`), así Vite la procesa y la incluye en el build con hash. Con opacidad 0.2, el texto blanco mantiene al menos **4.82:1** incluso en el punto más claro de la imagen. Si subís la opacidad, volvé a medir el contraste: con 0.25 baja a 4.29:1 y ya no cumple.
+La imagen se referencia con una ruta relativa desde el CSS (`url('../edificio_sin_fondo.webp')`), así Vite la procesa y la incluye en el build con hash. Con opacidad 0.2, el texto blanco mantiene al menos **4.82:1** incluso en el punto más claro de la imagen. Si subís la opacidad, volvé a medir el contraste: con 0.25 baja a 4.29:1 y ya no cumple.
 
 Estilos ya listos para el menú: `.sidebar-link` para cada ítem, y `.is-active` o `aria-current="page"` para el ítem activo.
 
