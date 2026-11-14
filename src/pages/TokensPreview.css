@@ -68,7 +68,10 @@
 
 .tp-grilla {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-10) * 5), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(calc(var(--space-10) * 5), 1fr)
+  );
   gap: var(--space-4);
 }
 

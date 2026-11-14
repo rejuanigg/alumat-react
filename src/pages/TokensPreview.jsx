@@ -1,4 +1,4 @@
-import './TokensPreview.css'
+import './TokensPreview.css';
 
 // Página temporal para revisar los design tokens (ruta /tokens).
 // Los valores se leen de las variables CSS: acá no se escribe ningún valor.
@@ -23,7 +23,12 @@ const grupos = [
   },
   {
     titulo: 'Texto',
-    tokens: ['--color-text', '--color-text-body', '--color-text-muted', '--color-text-on-dark'],
+    tokens: [
+      '--color-text',
+      '--color-text-body',
+      '--color-text-muted',
+      '--color-text-on-dark',
+    ],
   },
   {
     titulo: 'Estados y categorías',
@@ -44,22 +49,31 @@ const grupos = [
   },
   {
     titulo: 'Gráficos y otros',
-    tokens: ['--color-chart-line', '--color-chart-fill', '--color-notification', '--color-focus-ring'],
+    tokens: [
+      '--color-chart-line',
+      '--color-chart-fill',
+      '--color-notification',
+      '--color-focus-ring',
+    ],
   },
-]
+];
 
 const badges = [
-  { nombre: 'En proceso', bg: '--status-process-bg', fg: '--status-process-fg' },
+  {
+    nombre: 'En proceso',
+    bg: '--status-process-bg',
+    fg: '--status-process-fg',
+  },
   { nombre: 'Pendiente', bg: '--status-pending-bg', fg: '--status-pending-fg' },
   { nombre: 'Finalizado', bg: '--status-done-bg', fg: '--status-done-fg' },
-]
+];
 
 const kpis = [
   { nombre: 'Clientes', bg: '--kpi-clients-bg', fg: '--kpi-clients-fg' },
   { nombre: 'Productos', bg: '--kpi-products-bg', fg: '--kpi-products-fg' },
   { nombre: 'Pedidos', bg: '--kpi-orders-bg', fg: '--kpi-orders-text' },
   { nombre: 'Ventas', bg: '--kpi-sales-bg', fg: '--kpi-sales-text' },
-]
+];
 
 const estadosSuaves = [
   ['Activo', '--color-success-bg', '--color-success-text'],
@@ -67,7 +81,7 @@ const estadosSuaves = [
   ['Saldo', '--color-warning-bg', '--color-warning-text'],
   ['Diseño', '--color-accent-bg', '--color-accent'],
   ['Info', '--color-info-bg', '--color-info'],
-]
+];
 
 const layout = [
   '--sidebar-width',
@@ -78,18 +92,18 @@ const layout = [
   '--focus-ring-offset',
   '--scrollbar-size',
   '--sidebar-image-opacity',
-]
+];
 
-const tamanos = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']
-const pesos = ['regular', 'medium', 'semibold', 'bold', 'extrabold']
-const radios = ['sm', 'md', 'lg', 'pill']
-const sombras = ['sm', 'md', 'lg']
-const espacios = [1, 2, 3, 4, 5, 6, 8, 10]
+const tamanos = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'];
+const pesos = ['regular', 'medium', 'semibold', 'bold', 'extrabold'];
+const radios = ['sm', 'md', 'lg', 'pill'];
+const sombras = ['sm', 'md', 'lg'];
+const espacios = [1, 2, 3, 4, 5, 6, 8, 10];
 
 const valor = (token) =>
-  getComputedStyle(document.documentElement).getPropertyValue(token).trim()
+  getComputedStyle(document.documentElement).getPropertyValue(token).trim();
 
-const v = (token) => `var(${token})`
+const v = (token) => `var(${token})`;
 
 function Seccion({ titulo, children }) {
   return (
@@ -97,7 +111,7 @@ function Seccion({ titulo, children }) {
       <h2>{titulo}</h2>
       {children}
     </section>
-  )
+  );
 }
 
 function Token({ nombre }) {
@@ -106,7 +120,7 @@ function Token({ nombre }) {
       <code>{nombre}</code>
       <span>{valor(nombre)}</span>
     </div>
-  )
+  );
 }
 
 export default function TokensPreview() {
@@ -148,7 +162,10 @@ export default function TokensPreview() {
                 <div className="tp-grilla">
                   {g.tokens.map((t) => (
                     <div key={t} className="tp-color">
-                      <div className="tp-muestra" style={{ background: v(t) }} />
+                      <div
+                        className="tp-muestra"
+                        style={{ background: v(t) }}
+                      />
                       <Token nombre={t} />
                     </div>
                   ))}
@@ -162,7 +179,10 @@ export default function TokensPreview() {
               <div className="tp-fila">
                 {badges.map((b) => (
                   <div key={b.nombre} className="tp-columna">
-                    <span className="tp-badge" style={{ background: v(b.bg), color: v(b.fg) }}>
+                    <span
+                      className="tp-badge"
+                      style={{ background: v(b.bg), color: v(b.fg) }}
+                    >
                       {b.nombre}
                     </span>
                     <Token nombre={b.bg} />
@@ -176,7 +196,10 @@ export default function TokensPreview() {
               <div className="tp-grilla">
                 {kpis.map((k) => (
                   <div key={k.nombre} className="tp-kpi">
-                    <span className="tp-kpi-icono" style={{ background: v(k.bg), color: v(k.fg) }}>
+                    <span
+                      className="tp-kpi-icono"
+                      style={{ background: v(k.bg), color: v(k.fg) }}
+                    >
                       {k.nombre.charAt(0)}
                     </span>
                     <div>
@@ -191,7 +214,11 @@ export default function TokensPreview() {
             <Seccion titulo="Estados y categorías (texto sobre fondo suave)">
               <div className="tp-fila">
                 {estadosSuaves.map(([nombre, bg, fg]) => (
-                  <span key={nombre} className="tp-badge" style={{ background: v(bg), color: v(fg) }}>
+                  <span
+                    key={nombre}
+                    className="tp-badge"
+                    style={{ background: v(bg), color: v(fg) }}
+                  >
                     {nombre}
                   </span>
                 ))}
@@ -205,7 +232,9 @@ export default function TokensPreview() {
               <div className="tp-lista">
                 {tamanos.map((t) => (
                   <div key={t} className="tp-tipo">
-                    <span style={{ fontSize: v(`--font-size-${t}`) }}>Aberturas de aluminio</span>
+                    <span style={{ fontSize: v(`--font-size-${t}`) }}>
+                      Aberturas de aluminio
+                    </span>
                     <Token nombre={`--font-size-${t}`} />
                   </div>
                 ))}
@@ -213,7 +242,9 @@ export default function TokensPreview() {
               <div className="tp-lista">
                 {pesos.map((p) => (
                   <div key={p} className="tp-tipo">
-                    <span style={{ fontWeight: v(`--font-weight-${p}`) }}>Ventana corrediza</span>
+                    <span style={{ fontWeight: v(`--font-weight-${p}`) }}>
+                      Ventana corrediza
+                    </span>
                     <Token nombre={`--font-weight-${p}`} />
                   </div>
                 ))}
@@ -237,7 +268,10 @@ export default function TokensPreview() {
               <div className="tp-fila">
                 {radios.map((r) => (
                   <div key={r} className="tp-columna">
-                    <div className="tp-caja" style={{ borderRadius: v(`--radius-${r}`) }} />
+                    <div
+                      className="tp-caja"
+                      style={{ borderRadius: v(`--radius-${r}`) }}
+                    />
                     <Token nombre={`--radius-${r}`} />
                   </div>
                 ))}
@@ -248,7 +282,10 @@ export default function TokensPreview() {
               <div className="tp-fila">
                 {sombras.map((s) => (
                   <div key={s} className="tp-columna">
-                    <div className="tp-caja tp-caja-sombra" style={{ boxShadow: v(`--shadow-${s}`) }} />
+                    <div
+                      className="tp-caja tp-caja-sombra"
+                      style={{ boxShadow: v(`--shadow-${s}`) }}
+                    />
                     <Token nombre={`--shadow-${s}`} />
                   </div>
                 ))}
@@ -261,7 +298,10 @@ export default function TokensPreview() {
               <div className="tp-lista">
                 {espacios.map((e) => (
                   <div key={e} className="tp-espacio">
-                    <div className="tp-barra" style={{ width: v(`--space-${e}`) }} />
+                    <div
+                      className="tp-barra"
+                      style={{ width: v(`--space-${e}`) }}
+                    />
                     <Token nombre={`--space-${e}`} />
                   </div>
                 ))}
@@ -282,5 +322,5 @@ export default function TokensPreview() {
         </div>
       </div>
     </div>
-  )
+  );
 }
