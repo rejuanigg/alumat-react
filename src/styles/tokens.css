@@ -163,4 +163,6 @@
 
   /* Referencia: var() no funciona en media queries. Usar este valor a mano. */
   --breakpoint-md: 960px;
+  --layout-min-height: 100vh;
+  --duration-reduced-motion: 0.01ms;
 }

@@ -267,3 +267,10 @@ Estilos ya listos para el menú: `.sidebar-link` para cada ítem, y `.is-active`
 - `.sr-only`: texto que solo leen los lectores de pantalla.
 - `.on-dark`: texto blanco y foco blanco, para superficies oscuras como la topbar.
 - `prefers-reduced-motion`: si el usuario lo pide, las animaciones y transiciones se reducen al mínimo.
+
+### Tokens adicionales
+
+| Token                       | Valor    | Uso                                                                           |
+| --------------------------- | -------- | ----------------------------------------------------------------------------- |
+| `--layout-min-height`       | `100vh`  | Altura mínima del sidebar                                                     |
+| `--duration-reduced-motion` | `0.01ms` | Duración de animaciones y transiciones cuando se solicita movimiento reducido |
