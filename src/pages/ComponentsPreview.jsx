@@ -1,3 +1,6 @@
+import FilterBar from '../components/FilterBar/FilterBar.jsx';
+import SearchBar from '../components/SearchBar/SearchBar.jsx';
+import PageHeader from '../components/PageHeader/PageHeader.jsx';
 import Header from '../components/Header/Header.jsx';
 import Sidebar from '../components/Sidebar/Sidebar.jsx';
 import { Download, Pencil, Plus, Save, Star, Trash2 } from 'lucide-react';
@@ -38,6 +41,9 @@ const SECCIONES = [
   { id: 'form-field', titulo: 'FormField' },
   { id: 'sidebar', titulo: 'Sidebar' },
   { id: 'header', titulo: 'Header' },
+  { id: 'page-header', titulo: 'PageHeader' },
+  { id: 'search-bar', titulo: 'SearchBar' },
+  { id: 'filter-bar', titulo: 'FilterBar' },
 ];
 
 function Seccion({ id, titulo, descripcion, children }) {
@@ -178,6 +184,8 @@ function FormularioEjemplo() {
 
 export default function ComponentsPreview() {
   const [ultimaAccion, setUltimaAccion] = useState('ninguna todavía');
+  const [busqueda, setBusqueda] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
   const accion = (texto) => () => setUltimaAccion(texto);
 
   // Componentes pendientes (los programa otra persona del equipo).
@@ -437,6 +445,73 @@ export default function ComponentsPreview() {
           />
           <p role="status" className={styles.status}>
             Última acción: {ultimaAccion}
+          </p>
+        </Seccion>
+      </Seccion>
+      <Seccion
+        id="page-header"
+        titulo="PageHeader"
+        descripcion="Título, subtítulo, ícono y acciones de una página."
+      >
+        <PageHeader
+          title="Clientes"
+          subtitle="Administrá los clientes de ALUMAT."
+          icon={<Star />}
+          actions={
+            <Button icon={<Plus />} onClick={accion('Nuevo cliente')}>
+              Nuevo cliente
+            </Button>
+          }
+        />
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
+      </Seccion>
+      <Seccion
+        id="search-bar"
+        titulo="SearchBar"
+        descripcion="Buscador controlado con ícono y etiqueta accesible."
+      >
+        <SearchBar
+          value={busqueda}
+          onChange={(event) => setBusqueda(event.target.value)}
+          label="Buscar clientes"
+          placeholder="Buscar por nombre..."
+        />
+        <p role="status" className={styles.status}>
+          Texto de búsqueda: {busqueda || 'sin texto'}
+        </p>
+        <Seccion
+          id="filter-bar"
+          titulo="FilterBar"
+          descripcion="Buscador, filtro por estado y limpieza de valores."
+        >
+          <FilterBar
+            searchValue={busqueda}
+            onSearchChange={(event) => setBusqueda(event.target.value)}
+            searchLabel="Buscar clientes"
+            searchPlaceholder="Buscar por nombre..."
+            filters={[
+              {
+                name: 'estado',
+                label: 'Estado',
+                value: estadoFiltro,
+                placeholder: 'Todos',
+                options: [
+                  { value: 'activo', label: 'Activo' },
+                  { value: 'inactivo', label: 'Inactivo' },
+                ],
+                onChange: (event) => setEstadoFiltro(event.target.value),
+              },
+            ]}
+            onClear={() => {
+              setBusqueda('');
+              setEstadoFiltro('');
+            }}
+          />
+          <p role="status" className={styles.status}>
+            Búsqueda: {busqueda || 'sin texto'} · Estado:{' '}
+            {estadoFiltro || 'todos'}
           </p>
         </Seccion>
       </Seccion>

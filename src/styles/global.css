@@ -349,3 +349,110 @@ h4 {
   flex: 1;
   padding: var(--content-padding);
 }
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.page-header-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.page-header-info h1 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.page-header-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.page-header-icon svg {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+.page-header-subtitle {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.search-bar-icon {
+  position: absolute;
+  left: var(--space-3);
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.search-bar-input {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-3);
+  padding-left: calc(var(--space-3) + var(--icon-size-md) + var(--space-2));
+  border: var(--border-width) solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  color: var(--color-text-body);
+  background: var(--color-surface);
+}
+
+.search-bar-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-bar-input:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.filter-bar > .search-bar {
+  flex-basis: var(--search-min-width);
+}
+
+.filter-bar-field {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  flex-basis: var(--menu-min-width);
+}
+
+.filter-bar-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-body);
+}
