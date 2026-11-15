@@ -81,9 +81,9 @@ h4 {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: var(--duration-reduced-motion) !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: var(--duration-reduced-motion) !important;
     scroll-behavior: auto !important;
   }
 }
@@ -113,7 +113,7 @@ h4 {
   flex-direction: column;
   gap: var(--space-2);
   width: var(--sidebar-width);
-  min-height: 100vh;
+  min-height: var(--layout-min-height);
   padding: var(--space-6) var(--space-4);
   color: var(--color-text-on-dark);
   background: var(--sidebar-bg);
@@ -126,7 +126,7 @@ h4 {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url('../edificio_sin_fondo.png');
+  background-image: url('../edificio_sin_fondo.webp');
   background-position: bottom center;
   background-repeat: no-repeat;
   background-size: cover;

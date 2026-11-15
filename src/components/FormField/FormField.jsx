@@ -1,7 +1,7 @@
-import { AlertCircle } from 'lucide-react'
-import { useId } from 'react'
-import { cx } from '../_utils/cx.js'
-import styles from './FormField.module.css'
+import { AlertCircle } from 'lucide-react';
+import { useId } from 'react';
+import { cx } from '../_utils/cx.js';
+import styles from './FormField.module.css';
 
 /**
  * Etiqueta + control + ayuda + error, conectados por id.
@@ -10,18 +10,26 @@ import styles from './FormField.module.css'
  *     {(field) => <Input {...field} />}
  *   </FormField>
  */
-export default function FormField({ label, required = false, error, hint, children, className, ...rest }) {
-  const id = useId()
-  const hintId = hint ? `${id}-hint` : undefined
-  const errorId = error ? `${id}-error` : undefined
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+export default function FormField({
+  label,
+  required = false,
+  error,
+  hint,
+  children,
+  className,
+  ...rest
+}) {
+  const id = useId();
+  const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = error ? `${id}-error` : undefined;
+  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
 
   const control = children({
     id,
     required,
     'aria-invalid': error ? true : undefined,
     'aria-describedby': describedBy,
-  })
+  });
 
   return (
     <div className={cx(styles.field, className)} {...rest}>
@@ -46,5 +54,5 @@ export default function FormField({ label, required = false, error, hint, childr
         </p>
       )}
     </div>
-  )
+  );
 }
