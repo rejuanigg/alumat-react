@@ -1,3 +1,6 @@
+import Pagination from '../components/Pagination/Pagination.jsx';
+import DataTable from '../components/DataTable/DataTable.jsx';
+import StatCard from '../components/StatCard/StatCard.jsx';
 import FilterBar from '../components/FilterBar/FilterBar.jsx';
 import SearchBar from '../components/SearchBar/SearchBar.jsx';
 import PageHeader from '../components/PageHeader/PageHeader.jsx';
@@ -44,6 +47,9 @@ const SECCIONES = [
   { id: 'page-header', titulo: 'PageHeader' },
   { id: 'search-bar', titulo: 'SearchBar' },
   { id: 'filter-bar', titulo: 'FilterBar' },
+  { id: 'stat-card', titulo: 'StatCard' },
+  { id: 'data-table', titulo: 'DataTable' },
+  { id: 'pagination', titulo: 'Pagination' },
 ];
 
 function Seccion({ id, titulo, descripcion, children }) {
@@ -186,6 +192,7 @@ export default function ComponentsPreview() {
   const [ultimaAccion, setUltimaAccion] = useState('ninguna todavía');
   const [busqueda, setBusqueda] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [pagina, setPagina] = useState(1);
   const accion = (texto) => () => setUltimaAccion(texto);
 
   // Componentes pendientes (los programa otra persona del equipo).
@@ -514,6 +521,120 @@ export default function ComponentsPreview() {
             {estadoFiltro || 'todos'}
           </p>
         </Seccion>
+      </Seccion>
+      <Seccion
+        id="stat-card"
+        titulo="StatCard"
+        descripcion="Indicadores con cuatro variantes de color."
+      >
+        <div className={styles.grid}>
+          <StatCard
+            title="Clientes"
+            value={120}
+            icon={<Star />}
+            variant="clients"
+            description="Clientes registrados"
+          />
+          <StatCard
+            title="Productos"
+            value={48}
+            icon={<Star />}
+            variant="products"
+            description="Productos disponibles"
+          />
+          <StatCard
+            title="Pedidos"
+            value={15}
+            icon={<Star />}
+            variant="orders"
+            description="Pedidos del mes"
+          />
+          <StatCard
+            title="Ventas"
+            value="$250.000"
+            icon={<Star />}
+            variant="sales"
+            description="Total del mes"
+          />
+        </div>
+      </Seccion>
+      <Seccion
+        id="data-table"
+        titulo="DataTable"
+        descripcion="Tabla con filas alternadas, estados y acciones."
+      >
+        <DataTable
+          caption="Clientes de ejemplo"
+          columns={[
+            { key: 'nombre', label: 'Nombre' },
+            { key: 'email', label: 'Correo' },
+            {
+              key: 'activo',
+              label: 'Estado',
+              render: (activo) => (
+                <Badge tone={activo ? 'success' : 'danger'}>
+                  {activo ? 'Activo' : 'Inactivo'}
+                </Badge>
+              ),
+            },
+          ]}
+          rows={[
+            {
+              id: 1,
+              nombre: 'Ana Pérez',
+              email: 'ana@example.com',
+              activo: true,
+            },
+            {
+              id: 2,
+              nombre: 'Luis Gómez',
+              email: 'luis@example.com',
+              activo: false,
+            },
+            {
+              id: 3,
+              nombre: 'María López',
+              email: 'maria@example.com',
+              activo: true,
+            },
+          ]}
+          renderActions={(cliente) => (
+            <RowActions
+              itemName={cliente.nombre}
+              onView={accion(`Ver ${cliente.nombre}`)}
+              onEdit={accion(`Editar ${cliente.nombre}`)}
+              onDelete={accion(`Eliminar ${cliente.nombre}`)}
+            />
+          )}
+        />
+
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
+
+        <Muestra titulo="Tabla vacía">
+          <DataTable
+            caption="Clientes sin resultados"
+            columns={[{ key: 'nombre', label: 'Nombre' }]}
+            rows={[]}
+          />
+        </Muestra>
+      </Seccion>
+      <Seccion
+        id="pagination"
+        titulo="Pagination"
+        descripcion="Navegación y resumen de registros."
+      >
+        <Pagination
+          page={pagina}
+          pageSize={10}
+          total={25}
+          onPageChange={setPagina}
+        />
+
+        <Muestra titulo="Sin registros">
+          <Pagination page={1} pageSize={10} total={0} />
+        </Muestra>
       </Seccion>
     </main>
   );
