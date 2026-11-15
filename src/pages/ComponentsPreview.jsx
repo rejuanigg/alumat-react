@@ -1,3 +1,7 @@
+import ConfirmModal from '../components/ConfirmModal/ConfirmModal.jsx';
+import ProductCard from '../components/ProductCard/ProductCard.jsx';
+import imagenDemo from '../edificio_sin_fondo.webp';
+import Tabs from '../components/Tabs/Tabs.jsx';
 import Pagination from '../components/Pagination/Pagination.jsx';
 import DataTable from '../components/DataTable/DataTable.jsx';
 import StatCard from '../components/StatCard/StatCard.jsx';
@@ -50,6 +54,9 @@ const SECCIONES = [
   { id: 'stat-card', titulo: 'StatCard' },
   { id: 'data-table', titulo: 'DataTable' },
   { id: 'pagination', titulo: 'Pagination' },
+  { id: 'tabs', titulo: 'Tabs' },
+  { id: 'product-card', titulo: 'ProductCard' },
+  { id: 'confirm-modal', titulo: 'ConfirmModal' },
 ];
 
 function Seccion({ id, titulo, descripcion, children }) {
@@ -193,6 +200,8 @@ export default function ComponentsPreview() {
   const [busqueda, setBusqueda] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [pagina, setPagina] = useState(1);
+  const [pestana, setPestana] = useState('datos');
+  const [modalAbierto, setModalAbierto] = useState(false);
   const accion = (texto) => () => setUltimaAccion(texto);
 
   // Componentes pendientes (los programa otra persona del equipo).
@@ -635,6 +644,107 @@ export default function ComponentsPreview() {
         <Muestra titulo="Sin registros">
           <Pagination page={1} pageSize={10} total={0} />
         </Muestra>
+      </Seccion>
+      <Seccion
+        id="tabs"
+        titulo="Tabs"
+        descripcion="Pestañas controladas con navegación por teclado."
+      >
+        <Tabs
+          label="Información del cliente"
+          value={pestana}
+          onChange={setPestana}
+          items={[
+            {
+              value: 'datos',
+              label: 'Datos',
+              content: <p>Datos generales del cliente.</p>,
+            },
+            {
+              value: 'pedidos',
+              label: 'Pedidos',
+              content: <p>Listado de pedidos del cliente.</p>,
+            },
+            {
+              value: 'proximamente',
+              label: 'Próximamente',
+              disabled: true,
+              content: <p>Sección todavía no disponible.</p>,
+            },
+          ]}
+        />
+      </Seccion>
+      <Seccion
+        id="product-card"
+        titulo="ProductCard"
+        descripcion="Tarjetas de producto o diseño con imagen, estado y acciones."
+      >
+        <div className={styles.grid}>
+          <ProductCard
+            title="Ventana corrediza"
+            description="Ejemplo de producto con imagen ilustrativa."
+            imageSrc={imagenDemo}
+            imageAlt="Fachada de un edificio con ventanas"
+            badge={<Badge tone="success">Activo</Badge>}
+            actions={
+              <RowActions
+                itemName="Ventana corrediza"
+                onView={accion('Ver Ventana corrediza')}
+                onEdit={accion('Editar Ventana corrediza')}
+                onDelete={accion('Eliminar Ventana corrediza')}
+              />
+            }
+          />
+
+          <ProductCard
+            title="Diseño personalizado"
+            description="Ejemplo sin imagen cargada."
+            badge={<Badge tone="accent">Diseño</Badge>}
+            actions={
+              <Button
+                variant="outline"
+                onClick={accion('Ver Diseño personalizado')}
+              >
+                Ver diseño
+              </Button>
+            }
+          />
+        </div>
+
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
+      </Seccion>
+      <Seccion
+        id="confirm-modal"
+        titulo="ConfirmModal"
+        descripcion="Confirmación de eliminación. Es una demo: no borra datos."
+      >
+        <Button
+          variant="danger"
+          icon={<Trash2 />}
+          onClick={() => setModalAbierto(true)}
+        >
+          Eliminar registro de prueba
+        </Button>
+
+        <ConfirmModal
+          open={modalAbierto}
+          title="Eliminar cliente"
+          message="¿Querés eliminar a Ana Pérez? Esta acción es solo una prueba."
+          onCancel={() => {
+            setModalAbierto(false);
+            setUltimaAccion('Eliminación cancelada');
+          }}
+          onConfirm={() => {
+            setModalAbierto(false);
+            setUltimaAccion('Eliminación confirmada (demo)');
+          }}
+        />
+
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
       </Seccion>
     </main>
   );

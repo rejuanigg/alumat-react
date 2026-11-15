@@ -592,3 +592,144 @@ h4 {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
+.tabs-list {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: var(--space-1);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.tabs-trigger {
+  flex-shrink: 0;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.tabs-trigger:hover:not(:disabled) {
+  background: var(--color-surface-soft);
+}
+
+.tabs-trigger[aria-selected='true'] {
+  color: var(--color-text-on-dark);
+  background: var(--color-primary);
+}
+
+.tabs-trigger[aria-selected='true']:hover {
+  background: var(--color-primary-hover);
+}
+
+.tabs-trigger:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.tabs-panel {
+  padding: var(--space-4);
+}
+
+.tabs-panel[hidden] {
+  display: none;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.product-card-media {
+  display: grid;
+  place-items: center;
+  height: var(--card-min-width);
+  overflow: hidden;
+  background: var(--color-surface-soft);
+}
+
+.product-card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card-placeholder {
+  padding: var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.product-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.product-card-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.product-card-description {
+  margin: 0;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.product-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+.confirm-modal {
+  width: var(--modal-width);
+  max-width: calc(100% - var(--space-8));
+  max-height: calc(100% - var(--space-8));
+  margin: auto;
+  padding: 0;
+  overflow-y: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-body);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.confirm-modal::backdrop {
+  background: var(--color-overlay);
+}
+
+.confirm-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+
+.confirm-modal-body h2,
+.confirm-modal-body p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
