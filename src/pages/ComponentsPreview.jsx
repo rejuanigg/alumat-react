@@ -1,3 +1,15 @@
+import ConfirmModal from '../components/ConfirmModal/ConfirmModal.jsx';
+import ProductCard from '../components/ProductCard/ProductCard.jsx';
+import imagenDemo from '../edificio_sin_fondo.webp';
+import Tabs from '../components/Tabs/Tabs.jsx';
+import Pagination from '../components/Pagination/Pagination.jsx';
+import DataTable from '../components/DataTable/DataTable.jsx';
+import StatCard from '../components/StatCard/StatCard.jsx';
+import FilterBar from '../components/FilterBar/FilterBar.jsx';
+import SearchBar from '../components/SearchBar/SearchBar.jsx';
+import PageHeader from '../components/PageHeader/PageHeader.jsx';
+import Header from '../components/Header/Header.jsx';
+import Sidebar from '../components/Sidebar/Sidebar.jsx';
 import { Download, Pencil, Plus, Save, Star, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import {
@@ -34,6 +46,17 @@ const SECCIONES = [
   { id: 'badge', titulo: 'Badge y StatusTag' },
   { id: 'campos', titulo: 'Input, Select y Textarea' },
   { id: 'form-field', titulo: 'FormField' },
+  { id: 'sidebar', titulo: 'Sidebar' },
+  { id: 'header', titulo: 'Header' },
+  { id: 'page-header', titulo: 'PageHeader' },
+  { id: 'search-bar', titulo: 'SearchBar' },
+  { id: 'filter-bar', titulo: 'FilterBar' },
+  { id: 'stat-card', titulo: 'StatCard' },
+  { id: 'data-table', titulo: 'DataTable' },
+  { id: 'pagination', titulo: 'Pagination' },
+  { id: 'tabs', titulo: 'Tabs' },
+  { id: 'product-card', titulo: 'ProductCard' },
+  { id: 'confirm-modal', titulo: 'ConfirmModal' },
 ];
 
 function Seccion({ id, titulo, descripcion, children }) {
@@ -174,6 +197,11 @@ function FormularioEjemplo() {
 
 export default function ComponentsPreview() {
   const [ultimaAccion, setUltimaAccion] = useState('ninguna todavía');
+  const [busqueda, setBusqueda] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [pagina, setPagina] = useState(1);
+  const [pestana, setPestana] = useState('datos');
+  const [modalAbierto, setModalAbierto] = useState(false);
   const accion = (texto) => () => setUltimaAccion(texto);
 
   // Componentes pendientes (los programa otra persona del equipo).
@@ -401,6 +429,322 @@ export default function ComponentsPreview() {
           </FormField>
         </div>
         <FormularioEjemplo />
+      </Seccion>
+      <Seccion
+        id="sidebar"
+        titulo="Sidebar"
+        descripcion="Menú lateral con marca, íconos y estado activo según la ruta."
+      >
+        <Sidebar
+          items={[
+            { to: '/componentes', label: 'Componentes (activo)' },
+            { to: '/clientes', label: 'Clientes' },
+          ]}
+        />
+        <Seccion
+          id="header"
+          titulo="Header"
+          descripcion="Campana con notificación, usuario, rol y opciones desplegables."
+        >
+          <Header
+            userName="Valentina"
+            role="Administración"
+            hasNotifications
+            onNotifications={accion('Abrir notificaciones')}
+            actions={[
+              { label: 'Mi perfil', onClick: accion('Abrir perfil') },
+              {
+                label: 'Cerrar sesión',
+                onClick: accion('Cerrar sesión (demo)'),
+              },
+            ]}
+          />
+          <p role="status" className={styles.status}>
+            Última acción: {ultimaAccion}
+          </p>
+        </Seccion>
+      </Seccion>
+      <Seccion
+        id="page-header"
+        titulo="PageHeader"
+        descripcion="Título, subtítulo, ícono y acciones de una página."
+      >
+        <PageHeader
+          title="Clientes"
+          subtitle="Administrá los clientes de ALUMAT."
+          icon={<Star />}
+          actions={
+            <Button icon={<Plus />} onClick={accion('Nuevo cliente')}>
+              Nuevo cliente
+            </Button>
+          }
+        />
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
+      </Seccion>
+      <Seccion
+        id="search-bar"
+        titulo="SearchBar"
+        descripcion="Buscador controlado con ícono y etiqueta accesible."
+      >
+        <SearchBar
+          value={busqueda}
+          onChange={(event) => setBusqueda(event.target.value)}
+          label="Buscar clientes"
+          placeholder="Buscar por nombre..."
+        />
+        <p role="status" className={styles.status}>
+          Texto de búsqueda: {busqueda || 'sin texto'}
+        </p>
+        <Seccion
+          id="filter-bar"
+          titulo="FilterBar"
+          descripcion="Buscador, filtro por estado y limpieza de valores."
+        >
+          <FilterBar
+            searchValue={busqueda}
+            onSearchChange={(event) => setBusqueda(event.target.value)}
+            searchLabel="Buscar clientes"
+            searchPlaceholder="Buscar por nombre..."
+            filters={[
+              {
+                name: 'estado',
+                label: 'Estado',
+                value: estadoFiltro,
+                placeholder: 'Todos',
+                options: [
+                  { value: 'activo', label: 'Activo' },
+                  { value: 'inactivo', label: 'Inactivo' },
+                ],
+                onChange: (event) => setEstadoFiltro(event.target.value),
+              },
+            ]}
+            onClear={() => {
+              setBusqueda('');
+              setEstadoFiltro('');
+            }}
+          />
+          <p role="status" className={styles.status}>
+            Búsqueda: {busqueda || 'sin texto'} · Estado:{' '}
+            {estadoFiltro || 'todos'}
+          </p>
+        </Seccion>
+      </Seccion>
+      <Seccion
+        id="stat-card"
+        titulo="StatCard"
+        descripcion="Indicadores con cuatro variantes de color."
+      >
+        <div className={styles.grid}>
+          <StatCard
+            title="Clientes"
+            value={120}
+            icon={<Star />}
+            variant="clients"
+            description="Clientes registrados"
+          />
+          <StatCard
+            title="Productos"
+            value={48}
+            icon={<Star />}
+            variant="products"
+            description="Productos disponibles"
+          />
+          <StatCard
+            title="Pedidos"
+            value={15}
+            icon={<Star />}
+            variant="orders"
+            description="Pedidos del mes"
+          />
+          <StatCard
+            title="Ventas"
+            value="$250.000"
+            icon={<Star />}
+            variant="sales"
+            description="Total del mes"
+          />
+        </div>
+      </Seccion>
+      <Seccion
+        id="data-table"
+        titulo="DataTable"
+        descripcion="Tabla con filas alternadas, estados y acciones."
+      >
+        <DataTable
+          caption="Clientes de ejemplo"
+          columns={[
+            { key: 'nombre', label: 'Nombre' },
+            { key: 'email', label: 'Correo' },
+            {
+              key: 'activo',
+              label: 'Estado',
+              render: (activo) => (
+                <Badge tone={activo ? 'success' : 'danger'}>
+                  {activo ? 'Activo' : 'Inactivo'}
+                </Badge>
+              ),
+            },
+          ]}
+          rows={[
+            {
+              id: 1,
+              nombre: 'Ana Pérez',
+              email: 'ana@example.com',
+              activo: true,
+            },
+            {
+              id: 2,
+              nombre: 'Luis Gómez',
+              email: 'luis@example.com',
+              activo: false,
+            },
+            {
+              id: 3,
+              nombre: 'María López',
+              email: 'maria@example.com',
+              activo: true,
+            },
+          ]}
+          renderActions={(cliente) => (
+            <RowActions
+              itemName={cliente.nombre}
+              onView={accion(`Ver ${cliente.nombre}`)}
+              onEdit={accion(`Editar ${cliente.nombre}`)}
+              onDelete={accion(`Eliminar ${cliente.nombre}`)}
+            />
+          )}
+        />
+
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
+
+        <Muestra titulo="Tabla vacía">
+          <DataTable
+            caption="Clientes sin resultados"
+            columns={[{ key: 'nombre', label: 'Nombre' }]}
+            rows={[]}
+          />
+        </Muestra>
+      </Seccion>
+      <Seccion
+        id="pagination"
+        titulo="Pagination"
+        descripcion="Navegación y resumen de registros."
+      >
+        <Pagination
+          page={pagina}
+          pageSize={10}
+          total={25}
+          onPageChange={setPagina}
+        />
+
+        <Muestra titulo="Sin registros">
+          <Pagination page={1} pageSize={10} total={0} />
+        </Muestra>
+      </Seccion>
+      <Seccion
+        id="tabs"
+        titulo="Tabs"
+        descripcion="Pestañas controladas con navegación por teclado."
+      >
+        <Tabs
+          label="Información del cliente"
+          value={pestana}
+          onChange={setPestana}
+          items={[
+            {
+              value: 'datos',
+              label: 'Datos',
+              content: <p>Datos generales del cliente.</p>,
+            },
+            {
+              value: 'pedidos',
+              label: 'Pedidos',
+              content: <p>Listado de pedidos del cliente.</p>,
+            },
+            {
+              value: 'proximamente',
+              label: 'Próximamente',
+              disabled: true,
+              content: <p>Sección todavía no disponible.</p>,
+            },
+          ]}
+        />
+      </Seccion>
+      <Seccion
+        id="product-card"
+        titulo="ProductCard"
+        descripcion="Tarjetas de producto o diseño con imagen, estado y acciones."
+      >
+        <div className={styles.grid}>
+          <ProductCard
+            title="Ventana corrediza"
+            description="Ejemplo de producto con imagen ilustrativa."
+            imageSrc={imagenDemo}
+            imageAlt="Fachada de un edificio con ventanas"
+            badge={<Badge tone="success">Activo</Badge>}
+            actions={
+              <RowActions
+                itemName="Ventana corrediza"
+                onView={accion('Ver Ventana corrediza')}
+                onEdit={accion('Editar Ventana corrediza')}
+                onDelete={accion('Eliminar Ventana corrediza')}
+              />
+            }
+          />
+
+          <ProductCard
+            title="Diseño personalizado"
+            description="Ejemplo sin imagen cargada."
+            badge={<Badge tone="accent">Diseño</Badge>}
+            actions={
+              <Button
+                variant="outline"
+                onClick={accion('Ver Diseño personalizado')}
+              >
+                Ver diseño
+              </Button>
+            }
+          />
+        </div>
+
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
+      </Seccion>
+      <Seccion
+        id="confirm-modal"
+        titulo="ConfirmModal"
+        descripcion="Confirmación de eliminación. Es una demo: no borra datos."
+      >
+        <Button
+          variant="danger"
+          icon={<Trash2 />}
+          onClick={() => setModalAbierto(true)}
+        >
+          Eliminar registro de prueba
+        </Button>
+
+        <ConfirmModal
+          open={modalAbierto}
+          title="Eliminar cliente"
+          message="¿Querés eliminar a Ana Pérez? Esta acción es solo una prueba."
+          onCancel={() => {
+            setModalAbierto(false);
+            setUltimaAccion('Eliminación cancelada');
+          }}
+          onConfirm={() => {
+            setModalAbierto(false);
+            setUltimaAccion('Eliminación confirmada (demo)');
+          }}
+        />
+
+        <p role="status" className={styles.status}>
+          Última acción: {ultimaAccion}
+        </p>
       </Seccion>
     </main>
   );
