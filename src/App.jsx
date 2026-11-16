@@ -2,6 +2,7 @@ import MainLayout from './components/MainLayout/MainLayout.jsx';
 import { BrowserRouter, Link, Route, Routes } from 'react-router';
 import ComponentsPreview from './pages/ComponentsPreview.jsx';
 import TokensPreview from './pages/TokensPreview.jsx';
+import MovimientosTab from './pages/Cajas/MovimientosTab.jsx';
 
 function Inicio() {
   return (
@@ -70,6 +71,15 @@ function App() {
             >
               <h1>Prueba del MainLayout</h1>
               <p>Sidebar, Header y contenido integrados.</p>
+            </MainLayout>
+          }
+        />
+        {/* Temporal: para probar la pestaña hasta que exista la pantalla Cajas */}
+        <Route
+          path="/preview/cajas-movimientos"
+          element={
+            <MainLayout>
+              <MovimientosTab />
             </MainLayout>
           }
         />
