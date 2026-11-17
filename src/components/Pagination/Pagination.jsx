@@ -28,7 +28,7 @@ export default function Pagination({
   return (
     <div className="pagination">
       <p className="pagination-summary" role="status">
-        Mostrando {from} a {to} de {total}
+        Mostrando {from} a {to} de {total} registros
       </p>
 
       <nav className="pagination-controls" aria-label="Paginación">

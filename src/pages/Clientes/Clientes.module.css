@@ -1,0 +1,23 @@
+/* Estilos de la pantalla Clientes. Solo usan tokens. */
+
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* Tarjetas de indicadores: se acomodan solas según el ancho. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+  gap: var(--space-4);
+}
+
+/* Mensaje de error dentro de la tabla (sin conexión, sesión vencida). */
+.error {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
