@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Search } from 'lucide-react';
 import {
   Button,
@@ -63,6 +64,7 @@ const COLUMNAS = [
  * Calcula saldo esperado y diferencia, filtra por fecha y pagina.
  */
 export default function CierresTab({ cierres = [] }) {
+  const navigate = useNavigate();
   // 1. Estado: lo que se escribe en las fechas y lo que se aplicó con "Buscar".
   const [desde, setDesde] = useState('');
   const [hasta, setHasta] = useState('');
@@ -150,8 +152,7 @@ export default function CierresTab({ cierres = [] }) {
         renderActions={(fila) => (
           <RowActions
             itemName={`cierre del ${formatFechaHora(fila.fecha_cierre)}`}
-            // TODO: abrir el detalle del cierre cuando exista la pantalla.
-            onView={() => alert(`Cierre ${fila.id_cierre}`)}
+            onView={() => navigate(`/cajas/cierres/${fila.id_cierre}`)}
           />
         )}
       />

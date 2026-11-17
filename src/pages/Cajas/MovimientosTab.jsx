@@ -17,8 +17,12 @@ const COLUMNAS = [
     ),
   },
   { key: 'concepto', label: 'Concepto' },
-  // Sin boleta (pagos, retiros) se ve "—", lo pone DataTable.
-  { key: 'numero_boleta', label: 'Boleta' },
+  // Sin cobro asociado (pagos, retiros) se ve "—", lo pone DataTable.
+  {
+    key: 'id_cobro',
+    label: 'Cobro',
+    render: (valor) => (valor ? `#${valor}` : '—'),
+  },
   { key: 'monto', label: 'Monto', render: (valor) => formatMonedaCorta(valor) },
   { key: 'usuario', label: 'Usuario' },
 ];

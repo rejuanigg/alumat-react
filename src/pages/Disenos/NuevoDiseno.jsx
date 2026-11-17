@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ArrowLeft, Box, ClipboardList, Save, X } from 'lucide-react';
 import {
@@ -8,22 +8,20 @@ import {
   Input,
   PageHeader,
   Select,
-  StatusTag,
 } from '../../components';
-import { DISENOS, PRODUCTOS } from './disenos.mock.js';
+import { ApiError } from '../../api/client.js';
+import {
+  crearDiseno,
+  listarDisenos,
+  listarProductos,
+} from '../ProductosDisenos/productos.api.js';
 import styles from './NuevoDiseno.module.css';
 
-// Solo se ofrecen productos activos (lo indica la ayuda del formulario).
-const OPCIONES_PRODUCTO = PRODUCTOS.filter((p) => p.activo).map((p) => ({
-  value: String(p.id_producto),
-  label: p.nombre,
-}));
-
-const INICIAL = { id_producto: '', nombre: '', activo: true };
+const INICIAL = { id_producto: '', nombre: '' };
 
 /**
  * Pantalla "Nuevo diseño".
- * Por ahora usa datos de prueba (disenos.mock.js).
+ * Datos de /api/productos/ y /api/disenos/.
  */
 export default function NuevoDiseno() {
   const navigate = useNavigate();
@@ -35,27 +33,52 @@ export default function NuevoDiseno() {
   const [guardando, setGuardando] = useState(false);
 
   const cambiar = (campo) => (evento) => {
-    const { type, checked, value } = evento.target;
-    setForm((f) => ({ ...f, [campo]: type === 'checkbox' ? checked : value }));
+    const { value } = evento.target;
+    setForm((f) => ({ ...f, [campo]: value }));
     setErrores((e) => ({ ...e, [campo]: undefined }));
   };
 
-  // 2. Diseños ya registrados del producto elegido.
-  const producto = PRODUCTOS.find(
+  // 2. Productos activos para el combo y diseños del producto elegido.
+  const [productos, setProductos] = useState([]);
+  const [registrados, setRegistrados] = useState([]);
+
+  useEffect(() => {
+    listarProductos({ activo: true })
+      .then(setProductos)
+      .catch((e) => setErrores({ general: e.message }));
+  }, []);
+
+  useEffect(() => {
+    if (!form.id_producto) return;
+    let vigente = true;
+    listarDisenos({ id_producto: form.id_producto })
+      .then((lista) => vigente && setRegistrados(lista))
+      .catch((e) => vigente && setErrores({ general: e.message }));
+    return () => {
+      vigente = false;
+    };
+  }, [form.id_producto]);
+
+  const opcionesProducto = useMemo(
+    () =>
+      productos.map((p) => ({
+        value: String(p.id_producto),
+        label: p.nombre,
+      })),
+    [productos],
+  );
+  const producto = productos.find(
     (p) => String(p.id_producto) === form.id_producto,
   );
-  const disenos = DISENOS.filter(
-    (d) => String(d.id_producto) === form.id_producto,
-  ).map((d) => ({ ...d, producto: producto?.nombre }));
+  const disenos = (form.id_producto ? registrados : []).map((d) => ({
+    ...d,
+    nombre: d.nombre_diseno,
+    producto: producto?.nombre,
+  }));
 
   const columnas = [
     { key: 'nombre', label: 'Diseño' },
     { key: 'producto', label: 'Producto' },
-    {
-      key: 'activo',
-      label: 'Estado',
-      render: (valor) => <StatusTag status={valor ? 'Activo' : 'Inactivo'} />,
-    },
   ];
 
   // 3. Validación y envío.
@@ -72,22 +95,26 @@ export default function NuevoDiseno() {
     if (!validar()) return;
     setGuardando(true);
     try {
-      const datos = {
+      await crearDiseno({
         id_producto: Number(form.id_producto),
-        nombre: form.nombre.trim(),
-        activo: form.activo,
-      };
-      // TODO: ajustar la URL al endpoint real de Django.
-      // const res = await fetch('/api/disenos/', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(datos),
-      // });
-      // if (!res.ok) throw new Error('No se pudo guardar el diseño.');
-      console.log('Enviaría:', datos);
-      volver();
+        nombre_diseno: form.nombre.trim(),
+      });
+      navigate('/disenos');
     } catch (error) {
-      setErrores({ general: error.message });
+      // 400: { campo: ['mensaje'] }. El campo del form "nombre" es nombre_diseno.
+      if (error instanceof ApiError && error.status === 400) {
+        const { nombre_diseno, id_producto, ...resto } = error.errores;
+        const nuevos = {};
+        if (id_producto) nuevos.id_producto = id_producto.join(' ');
+        if (nombre_diseno) nuevos.nombre = nombre_diseno.join(' ');
+        const general = resto.non_field_errors ?? resto.detail;
+        if (general) nuevos.general = [].concat(general).join(' ');
+        setErrores(
+          Object.keys(nuevos).length ? nuevos : { general: error.message },
+        );
+      } else {
+        setErrores({ general: error.message });
+      }
     } finally {
       setGuardando(false);
     }
@@ -118,7 +145,7 @@ export default function NuevoDiseno() {
                 <Select
                   {...field}
                   placeholder="Seleccione un producto"
-                  options={OPCIONES_PRODUCTO}
+                  options={opcionesProducto}
                   value={form.id_producto}
                   onChange={cambiar('id_producto')}
                 />
@@ -139,18 +166,6 @@ export default function NuevoDiseno() {
                 />
               )}
             </FormField>
-          </div>
-
-          <div className={styles.estado}>
-            <span className={styles.label}>Estado</span>
-            <label className={styles.checkbox}>
-              <input
-                type="checkbox"
-                checked={form.activo}
-                onChange={cambiar('activo')}
-              />
-              Activo (disponible para elegir en pedidos)
-            </label>
           </div>
 
           <p className={styles.hint}>Solo se muestran los productos activos.</p>

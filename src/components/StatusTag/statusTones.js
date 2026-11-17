@@ -6,6 +6,7 @@ export const STATUS_TONES = {
   Activo: 'success',
   Inactivo: 'danger',
   Pagada: 'success',
+  'Con saldo': 'warning',
   Pendiente: 'warning',
   Abierta: 'info',
   Cerrada: 'neutral',
