@@ -1,0 +1,42 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+}
+
+/* Contraste texto/fondo: ver README → Componentes → Badge. */
+.success {
+  color: var(--color-success-text);
+  background-color: var(--color-success-bg);
+}
+
+.danger {
+  color: var(--color-danger);
+  background-color: var(--color-danger-bg);
+}
+
+.warning {
+  color: var(--color-warning-text);
+  background-color: var(--color-warning-bg);
+}
+
+.info {
+  color: var(--color-info);
+  background-color: var(--color-info-bg);
+}
+
+.accent {
+  color: var(--color-accent);
+  background-color: var(--color-accent-bg);
+}
+
+.neutral {
+  color: var(--color-text-muted);
+  background-color: var(--color-border);
+}

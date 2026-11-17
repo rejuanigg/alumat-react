@@ -1,0 +1,40 @@
+/* Estilos de la pantalla de inicio. Solo usan tokens. */
+
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+  gap: var(--space-4);
+}
+
+.section {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.sectionTitle {
+  color: var(--color-primary-strong);
+}
+
+.accesos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.aviso {
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-danger-bg);
+  border-radius: var(--radius-md);
+}

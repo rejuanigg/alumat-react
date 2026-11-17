@@ -1,0 +1,133 @@
+/* Pantalla de login. Solo usa tokens. */
+
+.pantalla {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: var(--layout-min-height);
+  background: var(--color-bg);
+}
+
+/* Panel izquierdo: mismo degradé e imagen que el Sidebar. */
+.presentacion {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-10);
+  color: var(--color-text-on-dark);
+  background: var(--sidebar-bg);
+  overflow: hidden;
+}
+
+.presentacion::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url('../../edificio_sin_fondo.webp');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: var(--sidebar-image-opacity);
+}
+
+.marca {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.textoPresentacion {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 28rem;
+  font-size: var(--font-size-lg);
+}
+
+.antetitulo {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+}
+
+.titular {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+}
+
+/* Panel derecho: tarjeta centrada con el formulario. */
+.contenido {
+  display: grid;
+  place-items: center;
+  padding: var(--space-8);
+}
+
+.tarjeta {
+  display: grid;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: var(--modal-width);
+  padding: var(--space-8);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.encabezado {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.titulo {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary-strong);
+}
+
+.subtitulo {
+  color: var(--color-text-muted);
+}
+
+.errorGeneral {
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-danger-bg);
+  border-radius: var(--radius-md);
+}
+
+.boton {
+  width: 100%;
+}
+
+.pie {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-body);
+  text-align: center;
+}
+
+.pie a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: underline;
+}
+
+.ayuda {
+  color: var(--color-text-muted);
+}
+
+/* Pantallas angostas: solo el formulario (960px = --breakpoint-md). */
+@media (max-width: 960px) {
+  .pantalla {
+    grid-template-columns: 1fr;
+  }
+
+  .presentacion {
+    display: none;
+  }
+}

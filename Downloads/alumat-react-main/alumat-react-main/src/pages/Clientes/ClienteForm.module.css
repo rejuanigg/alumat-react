@@ -1,0 +1,52 @@
+/* Estilos del formulario de cliente. Solo usan tokens. */
+
+.form {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* Cada sección es una tarjeta blanca, como las StatCards. */
+.section {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.sectionTitle {
+  color: var(--color-primary-strong);
+}
+
+/* Dos columnas en pantallas anchas; una sola en angostas. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width), 1fr));
+  gap: var(--space-4);
+}
+
+/* Campo que ocupa todo el ancho de la grilla. */
+.full {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Error que no corresponde a un campo (sesión, conexión, permisos). */
+.errorGeneral {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-danger-bg);
+  border-radius: var(--radius-md);
+}
