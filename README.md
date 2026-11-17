@@ -274,3 +274,15 @@ Estilos ya listos para el menú: `.sidebar-link` para cada ítem, y `.is-active`
 | --------------------------- | -------- | ----------------------------------------------------------------------------- |
 | `--layout-min-height`       | `100vh`  | Altura mínima del sidebar                                                     |
 | `--duration-reduced-motion` | `0.01ms` | Duración de animaciones y transiciones cuando se solicita movimiento reducido |
+
+## Componentes adicionales
+
+Los componentes se pueden importar desde `src/components/index.js`.
+Las props están documentadas en el comentario inicial de cada componente.
+
+- Sidebar, Header, PageHeader, SearchBar, FilterBar, StatCard,
+  DataTable, Pagination, Tabs, ProductCard y ConfirmModal:
+  ejemplos interactivos en `/componentes`.
+- MainLayout: ejemplo completo en `/layout-preview`.
+
+Los ejemplos usan datos de prueba y no modifican el backend.

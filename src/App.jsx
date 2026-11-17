@@ -1,6 +1,8 @@
+import MainLayout from './components/MainLayout/MainLayout.jsx';
 import { BrowserRouter, Link, Route, Routes } from 'react-router';
 import ComponentsPreview from './pages/ComponentsPreview.jsx';
 import TokensPreview from './pages/TokensPreview.jsx';
+import MovimientosTab from './pages/Cajas/MovimientosTab.jsx';
 
 function Inicio() {
   return (
@@ -57,6 +59,30 @@ function App() {
           element={<PaginaPendiente titulo="Ventas y cobros" />}
         />
         <Route path="/cajas" element={<PaginaPendiente titulo="Cajas" />} />
+        <Route
+          path="/layout-preview"
+          element={
+            <MainLayout
+              headerProps={{
+                userName: 'Valentina',
+                role: 'Administración',
+                hasNotifications: true,
+              }}
+            >
+              <h1>Prueba del MainLayout</h1>
+              <p>Sidebar, Header y contenido integrados.</p>
+            </MainLayout>
+          }
+        />
+        {/* Temporal: para probar la pestaña hasta que exista la pantalla Cajas */}
+        <Route
+          path="/preview/cajas-movimientos"
+          element={
+            <MainLayout>
+              <MovimientosTab />
+            </MainLayout>
+          }
+        />
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
     </BrowserRouter>

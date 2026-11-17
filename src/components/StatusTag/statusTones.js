@@ -11,4 +11,6 @@ export const STATUS_TONES = {
   Cerrada: 'neutral',
   'En proceso': 'info',
   Finalizado: 'success',
+  Entrada: 'success',
+  Salida: 'danger',
 };
