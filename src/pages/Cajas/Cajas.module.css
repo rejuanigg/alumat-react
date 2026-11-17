@@ -1,8 +1,28 @@
-/* Estilos compartidos por las pestanas de Cajas. Solo usan tokens. */
+/* Estilos compartidos por la página Cajas y sus pestanas. Solo usan tokens. */
+
+.pagina {
+  display: grid;
+  gap: var(--space-5);
+}
 
 .tab {
   display: grid;
   gap: var(--space-5);
+}
+
+/* Barra de estado de la apertura en curso. */
+.estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-body);
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Tarjetas de indicadores: se acomodan solas segun el ancho. */
@@ -10,4 +30,46 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
   gap: var(--space-4);
+}
+
+/* Ícono + texto dentro de cada pestaña. */
+.tabLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tabLabel svg {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+/* Filtro por fecha de Cierres anteriores. */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.filtros > input {
+  width: auto;
+}
+
+/* Recuadro con las fórmulas del cierre. */
+.nota {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-body);
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.notaSecundaria,
+.aviso {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
 }

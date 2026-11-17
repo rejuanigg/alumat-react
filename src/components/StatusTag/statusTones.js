@@ -13,4 +13,7 @@ export const STATUS_TONES = {
   Finalizado: 'success',
   Entrada: 'success',
   Salida: 'danger',
+  'Sin diferencia': 'success',
+  Faltante: 'danger',
+  Sobrante: 'info',
 };
