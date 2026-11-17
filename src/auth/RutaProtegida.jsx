@@ -31,9 +31,11 @@ export default function RutaProtegida() {
 
   return (
     <MainLayout
-      headerProps={{
-        userName: usuario || 'Usuario',
-        actions: [{ label: 'Cerrar sesión', onClick: cerrar }],
+      sidebarProps={{
+        user: {
+          name: usuario || 'Usuario',
+          actions: [{ label: 'Cerrar sesión', onClick: cerrar }],
+        },
       }}
     />
   );

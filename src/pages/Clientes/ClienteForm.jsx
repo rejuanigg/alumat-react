@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Button, FormField, Input, Select, Textarea } from '../../components';
+import { Button, FormField, Input, Select } from '../../components';
 import { URL_LOGIN } from '../../api/client.js';
 import { TIPOS_CLIENTE } from './clientes.api.js';
 import { tieneErrores, validarCliente } from './validaciones.js';
@@ -321,42 +321,7 @@ export default function ClienteForm({
               />
             )}
           </FormField>
-
-          {/* Localidad y código postal: el backend todavía no los guarda. */}
-          <FormField label="Localidad" hint="Disponible próximamente.">
-            {(field) => (
-              <Select
-                {...field}
-                options={[]}
-                placeholder="Seleccioná una localidad"
-                disabled
-              />
-            )}
-          </FormField>
-
-          <FormField label="Código postal" hint="Disponible próximamente.">
-            {(field) => <Input {...field} placeholder="Ej.: 5000" disabled />}
-          </FormField>
         </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="sec-obs">
-        <h2 id="sec-obs" className={styles.sectionTitle}>
-          Observaciones
-        </h2>
-        {/* El backend todavía no tiene el campo observaciones en Cliente. */}
-        <FormField
-          label="Observaciones (opcional)"
-          hint="Disponible próximamente."
-        >
-          {(field) => (
-            <Textarea
-              {...field}
-              placeholder="Datos adicionales del cliente"
-              disabled
-            />
-          )}
-        </FormField>
       </section>
 
       <div className={styles.actions}>

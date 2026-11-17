@@ -23,6 +23,9 @@ import {
   obtenerVenta,
   registrarCobro,
 } from './ventas.api.js';
+import { listarDetalles } from '../Pedidos/pedidos.api.js';
+import { columnasAberturas } from '../Pedidos/aberturas.js';
+import useCatalogo from '../Pedidos/useCatalogo.js';
 import styles from '../Clientes/ClienteForm.module.css';
 import listado from '../Listado.module.css';
 
@@ -60,6 +63,8 @@ export default function DetalleVenta() {
 
   const [venta, setVenta] = useState(null);
   const [cobros, setCobros] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const { nombresDiseno } = useCatalogo();
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
@@ -74,8 +79,10 @@ export default function DetalleVenta() {
     setError(null);
     try {
       const [v, cs] = await Promise.all([obtenerVenta(id), listarCobros(id)]);
+      const dets = await listarDetalles(v.id_pedido);
       setVenta(v);
       setCobros(cs);
+      setProductos(dets);
     } catch (e) {
       setError(e);
     } finally {
@@ -228,6 +235,21 @@ export default function DetalleVenta() {
                 </dd>
               </div>
             </dl>
+          </section>
+
+          <section className={styles.section} aria-labelledby="sec-productos">
+            <div className={listado.tituloFila}>
+              <h2 id="sec-productos" className={styles.sectionTitle}>
+                Productos
+              </h2>
+            </div>
+            <DataTable
+              caption="Productos de la venta"
+              columns={columnasAberturas(nombresDiseno)}
+              rows={productos}
+              rowKey="id_detalle_pedido"
+              emptyMessage="El pedido no tiene productos."
+            />
           </section>
 
           <section className={styles.section} aria-labelledby="sec-cobros">

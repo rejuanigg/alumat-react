@@ -6,7 +6,9 @@ import {
   ClipboardList,
   Receipt,
   Wallet,
+  CircleUser,
 } from 'lucide-react';
+import Logo from '../../icon.png';
 
 const enlaces = [
   { to: '/clientes', label: 'Clientes', icon: Users },
@@ -24,20 +26,25 @@ const enlaces = [
  * - logo: contenido de marca; por defecto, "ALUMAT".
  * - items: lista de objetos { to, label, icon }.
  *   icon es un componente de ícono opcional.
+ * - user: usuario opcional { name, role, actions: [{ label, onClick }] }.
+ *   Se muestra al pie con su ícono y un desplegable de opciones.
  * - onNavigate: función opcional al seleccionar un enlace.
  * - className: clases adicionales para el contenedor.
  *
  * NavLink indica la ruta activa mediante aria-current="page".
  */
 export default function Sidebar({
-  logo = 'ALUMAT',
+  logo = Logo,
   items = enlaces,
+  user,
   onNavigate,
   className = '',
 }) {
   return (
     <aside className={`sidebar ${className}`.trim()}>
-      <div className="sidebar-brand">{logo}</div>
+      <NavLink to="/" className="sidebar-brand">
+        <img src={logo} alt="ALUMAT" />
+      </NavLink>
 
       <nav aria-label="Navegación principal">
         <ul className="sidebar-menu">
@@ -51,6 +58,38 @@ export default function Sidebar({
           ))}
         </ul>
       </nav>
+
+      {user && (
+        <details className="sidebar-user">
+          <summary className="sidebar-user-trigger">
+            <CircleUser className="sidebar-user-icon" aria-hidden="true" />
+            <span className="sidebar-user-info">
+              <span className="sidebar-user-name">{user.name}</span>
+              {user.role && (
+                <span className="sidebar-user-role">{user.role}</span>
+              )}
+            </span>
+          </summary>
+
+          <ul className="sidebar-user-options">
+            {(user.actions ?? []).map(({ label, onClick }) => (
+              <li key={label}>
+                <button
+                  type="button"
+                  className="sidebar-user-option"
+                  onClick={(event) => {
+                    const details = event.currentTarget.closest('details');
+                    if (details) details.open = false;
+                    onClick?.();
+                  }}
+                >
+                  {label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
     </aside>
   );
 }
