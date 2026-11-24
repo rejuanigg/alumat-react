@@ -4,10 +4,6 @@ import { cx } from '../_utils/cx.js';
 import inputStyles from '../Input/Input.module.css';
 import styles from './Select.module.css';
 
-/**
- * Lista desplegable nativa.
- * options: [{ value, label }]. `placeholder` agrega una primera opción vacía.
- */
 const Select = forwardRef(function Select(
   { options = [], placeholder, invalid, className, ...rest },
   ref,

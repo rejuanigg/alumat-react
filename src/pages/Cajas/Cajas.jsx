@@ -3,6 +3,7 @@ import {
   Banknote,
   CircleArrowDown,
   CircleArrowUp,
+  CreditCard,
   DollarSign,
   Lock,
   Plus,
@@ -27,18 +28,26 @@ import {
   listarAperturas,
   listarCajas,
   listarCierres,
+  listarCobros,
   listarMovimientos,
   mensajesDeError,
   registrarMovimiento as apiRegistrarMovimiento,
 } from './cajas.api.js';
 import ModalFormulario from './ModalFormulario.jsx';
-import { formatFechaHora, formatMonedaCorta, sumar } from './formatos.js';
+import {
+  cobrosNoEfectivo,
+  formatFechaHora,
+  formatMonedaCorta,
+  sumar,
+} from './formatos.js';
+import CobrosNoEfectivoTab from './CobrosNoEfectivoTab.jsx';
 import MovimientosTab from './MovimientosTab.jsx';
 import CierresTab from './CierresTab.jsx';
 import styles from './Cajas.module.css';
 
 const SUBTITULOS = {
   movimientos: 'Apertura, movimientos de efectivo y cierre de caja',
+  electronicos: 'Cobros por transferencia o tarjeta (no afectan el efectivo)',
   cierres: 'Consulta de los cierres de caja anteriores',
 };
 
@@ -53,27 +62,19 @@ const MOVIMIENTO_INICIAL = {
   monto: '',
 };
 
-/** El backend solo manda id_usuario (no hay endpoint de usuarios). */
 const nombreUsuario = (id) => `Usuario #${id}`;
 
-/**
- * Pantalla "Caja diaria".
- * Hay una sola caja: mientras haya una apertura en curso no se puede abrir otra.
- * Datos de /api/cajas/, /api/aperturas/, /api/movimiento-caja/ y
- * /api/cierre-caja/.
- */
 export default function Cajas() {
-  // 1. Datos del servidor, carga y error.
   const [caja, setCaja] = useState(null);
   const [aperturas, setAperturas] = useState([]);
   const [todosMovimientos, setTodosMovimientos] = useState([]);
   const [todosCierres, setTodosCierres] = useState([]);
+  const [todosCobros, setTodosCobros] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
   const [pestana, setPestana] = useState('movimientos');
 
-  // Un solo modal abierto a la vez: 'abrir' | 'movimiento' | 'cerrar' | null.
   const [modal, setModal] = useState(null);
   const [enviando, setEnviando] = useState(false);
   const [errorModal, setErrorModal] = useState(null);
@@ -85,16 +86,18 @@ export default function Cajas() {
     setCargando(true);
     setError(null);
     try {
-      const [cajas, aps, movs, cierres] = await Promise.all([
+      const [cajas, aps, movs, cierres, cobros] = await Promise.all([
         listarCajas(),
         listarAperturas(),
         listarMovimientos(),
         listarCierres(),
+        listarCobros(),
       ]);
       setCaja(cajas[0] ?? null);
       setAperturas(aps);
       setTodosMovimientos(movs);
       setTodosCierres(cierres);
+      setTodosCobros(cobros);
     } catch (e) {
       setError(e);
     } finally {
@@ -106,7 +109,6 @@ export default function Cajas() {
     cargar();
   }, [cargar]);
 
-  // 2. Apertura en curso (null = caja cerrada) y sus movimientos.
   const apertura = aperturas.find((a) => a.estado === 'abierta') ?? null;
   const cajaAbierta = apertura !== null;
 
@@ -120,7 +122,11 @@ export default function Cajas() {
     [todosMovimientos, apertura],
   );
 
-  // Cierres para la pestaña: suman el monto inicial y la fecha de su apertura.
+  const cobrosElectronicos = useMemo(
+    () => cobrosNoEfectivo(todosCobros, apertura),
+    [todosCobros, apertura],
+  );
+
   const cierres = useMemo(() => {
     const porId = Object.fromEntries(aperturas.map((a) => [a.id_apertura, a]));
     return todosCierres.map((c) => ({
@@ -132,7 +138,6 @@ export default function Cajas() {
     }));
   }, [todosCierres, aperturas]);
 
-  // 3. Indicadores de la apertura en curso.
   const montoInicialApertura = cajaAbierta ? Number(apertura.monto_inicial) : 0;
   const entradas = sumar(
     movimientosDelDia.filter((m) => m.tipo_movimiento === 'entrada'),
@@ -143,9 +148,9 @@ export default function Cajas() {
     'monto',
   );
   const saldoEsperado = montoInicialApertura + entradas - salidas;
+  const totalElectronico = sumar(cobrosElectronicos, 'monto');
   const indicador = (valor) => (cargando || error ? '—' : valor);
 
-  // 4. Acciones: cada una llama a la API y vuelve a cargar los datos.
   const cerrarModal = () => {
     setModal(null);
     setErrorModal(null);
@@ -179,7 +184,6 @@ export default function Cajas() {
       return;
     }
     enviar(async () => {
-      // Primera vez: todavía no hay caja, se crea la caja principal.
       const cajaUsada =
         caja ?? (await crearCaja({ nombre_caja: 'Caja principal' }));
       await apiAbrirCaja({
@@ -256,7 +260,7 @@ export default function Cajas() {
       />
 
       <div className={styles.pagina}>
-        {pestana === 'movimientos' && (
+        {pestana !== 'cierres' && (
           <>
             <div className={styles.estado} role="status">
               <StatusTag status={cajaAbierta ? 'Abierta' : 'Cerrada'} />
@@ -309,6 +313,13 @@ export default function Cajas() {
                 icon={<Wallet />}
                 variant="products"
               />
+              <StatCard
+                title="Transferencias y tarjetas"
+                value={indicador(formatMonedaCorta(totalElectronico))}
+                description="No afecta el efectivo"
+                icon={<CreditCard />}
+                variant="clients"
+              />
             </div>
           </>
         )}
@@ -328,6 +339,20 @@ export default function Cajas() {
               content: (
                 <MovimientosTab
                   movimientos={movimientosDelDia}
+                  cajaAbierta={cajaAbierta}
+                />
+              ),
+            },
+            {
+              value: 'electronicos',
+              label: (
+                <span className={styles.tabLabel}>
+                  <CreditCard aria-hidden="true" /> Transferencias y tarjetas
+                </span>
+              ),
+              content: (
+                <CobrosNoEfectivoTab
+                  cobros={cobrosElectronicos}
                   cajaAbierta={cajaAbierta}
                 />
               ),

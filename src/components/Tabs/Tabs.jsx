@@ -1,17 +1,5 @@
 import { useId, useRef } from 'react';
 
-/**
- * Pestañas controladas.
- *
- * Props:
- * - items: [{ value, label, content, disabled }].
- *   Cada value debe ser único.
- * - value: valor de la pestaña seleccionada.
- * - onChange: recibe el valor de la nueva pestaña.
- * - label: nombre accesible del grupo.
- *
- * Teclado: flechas izquierda/derecha, Home y End.
- */
 export default function Tabs({
   items = [],
   value,

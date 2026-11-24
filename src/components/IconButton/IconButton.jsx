@@ -1,10 +1,6 @@
 import { cx } from '../_utils/cx.js';
 import styles from './IconButton.module.css';
 
-/**
- * Botón que solo muestra un ícono. `label` es obligatorio: va en aria-label y title.
- * tone: "neutral" | "primary" | "success" | "danger"
- */
 export default function IconButton({
   label,
   icon,

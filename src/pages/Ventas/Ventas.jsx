@@ -33,7 +33,6 @@ const OPCIONES_ESTADO = [
 
 const saldada = (venta) => Number(venta.saldo_pendiente) === 0;
 
-/** Pantalla "Ventas y cobros". Datos de /api/ventas/, /api/pedidos/ y /api/clientes/. */
 export default function Ventas() {
   const navigate = useNavigate();
 
@@ -252,7 +251,6 @@ export default function Ventas() {
   );
 }
 
-/** Mensaje de error dentro de la tabla, con reintento o enlace al login. */
 function MensajeError({ error, onRetry }) {
   return (
     <span className={styles.error} role="alert">

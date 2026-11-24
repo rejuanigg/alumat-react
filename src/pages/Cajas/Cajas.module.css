@@ -1,5 +1,3 @@
-/* Estilos compartidos por la página Cajas y sus pestanas. Solo usan tokens. */
-
 .pagina {
   display: grid;
   gap: var(--space-5);
@@ -10,7 +8,6 @@
   gap: var(--space-5);
 }
 
-/* Barra de estado de la apertura en curso. */
 .estado {
   display: flex;
   flex-wrap: wrap;
@@ -25,14 +22,12 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Tarjetas de indicadores: se acomodan solas segun el ancho. */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
   gap: var(--space-4);
 }
 
-/* Ícono + texto dentro de cada pestaña. */
 .tabLabel {
   display: inline-flex;
   align-items: center;
@@ -44,7 +39,6 @@
   height: var(--icon-size-sm);
 }
 
-/* Filtro por fecha de Cierres anteriores. */
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -56,7 +50,6 @@
   width: auto;
 }
 
-/* Recuadro con las fórmulas del cierre. */
 .nota {
   display: grid;
   gap: var(--space-2);

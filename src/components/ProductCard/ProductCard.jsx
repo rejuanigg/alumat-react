@@ -1,16 +1,5 @@
 import { useId } from 'react';
 
-/**
- * Tarjeta reutilizable para productos o diseños.
- *
- * Props:
- * - title: nombre del producto o diseño.
- * - description: descripción opcional.
- * - imageSrc: dirección de la imagen, opcional.
- * - imageAlt: descripción de la imagen; vacío si es decorativa.
- * - badge: elemento Badge o StatusTag opcional.
- * - actions: botones de acción opcionales.
- */
 export default function ProductCard({
   title,
   description,

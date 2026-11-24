@@ -1,15 +1,5 @@
 import { Bell, ChevronDown } from 'lucide-react';
 
-/**
- * Encabezado de ALUMAT.
- *
- * Props:
- * - userName: nombre visible del usuario.
- * - role: rol del usuario.
- * - hasNotifications: muestra el indicador de notificaciones.
- * - onNotifications: función al pulsar la campana.
- * - actions: opciones del desplegable [{ label, onClick }].
- */
 export default function Header({
   userName = 'Usuario',
   role = '',

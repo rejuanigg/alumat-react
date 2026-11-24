@@ -4,7 +4,6 @@ import { PageHeader } from '../../components';
 import { crearCliente } from './clientes.api.js';
 import ClienteForm from './ClienteForm.jsx';
 
-/** Pantalla "Nuevo cliente". Guarda en /api/clientes/ y vuelve al listado. */
 export default function NuevoCliente() {
   const navigate = useNavigate();
 

@@ -1,33 +1,30 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
-import { ArrowLeft, Plus, Receipt } from 'lucide-react';
+import { ArrowLeft, Plus, Printer, Receipt } from 'lucide-react';
 import {
   Button,
-  DataTable,
   FormField,
   Input,
   PageHeader,
   Select,
-  StatusTag,
 } from '../../components';
 import { URL_LOGIN } from '../../api/client.js';
 import { mensajesDeError } from '../../api/errores.js';
-import { formatFechaHora, formatMoneda } from '../Cajas/formatos.js';
+import { formatMoneda } from '../Cajas/formatos.js';
 import ModalFormulario from '../Cajas/ModalFormulario.jsx';
 import {
   METODOS_PAGO,
   TIPOS_COBRO,
   aperturaAbierta,
-  etiquetaMetodo,
   listarCobros,
   obtenerVenta,
   registrarCobro,
 } from './ventas.api.js';
-import { listarDetalles } from '../Pedidos/pedidos.api.js';
-import { columnasAberturas } from '../Pedidos/aberturas.js';
+import { listarDetalles, obtenerPedido } from '../Pedidos/pedidos.api.js';
+import { obtenerCliente } from '../Clientes/clientes.api.js';
+import Boleta from './Boleta.jsx';
 import useCatalogo from '../Pedidos/useCatalogo.js';
 import styles from '../Clientes/ClienteForm.module.css';
-import listado from '../Listado.module.css';
 
 const COBRO_VACIO = {
   tipo_cobro: 'parcial',
@@ -35,28 +32,6 @@ const COBRO_VACIO = {
   monto: '',
 };
 
-const COLUMNAS = [
-  { key: 'id_cobro', label: '#' },
-  {
-    key: 'fecha_cobro',
-    label: 'Fecha',
-    render: (valor) => formatFechaHora(valor),
-  },
-  { key: 'numero_boleta', label: 'Boleta' },
-  {
-    key: 'metodo_pago',
-    label: 'Método de pago',
-    render: (valor) => etiquetaMetodo(valor),
-  },
-  {
-    key: 'tipo_cobro',
-    label: 'Tipo',
-    render: (valor) => (valor === 'total' ? 'Total' : 'Parcial'),
-  },
-  { key: 'monto', label: 'Monto', render: (valor) => formatMoneda(valor) },
-];
-
-/** Pantalla "Detalle de venta": /ventas-cobros/:id, con sus cobros. */
 export default function DetalleVenta() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -64,6 +39,7 @@ export default function DetalleVenta() {
   const [venta, setVenta] = useState(null);
   const [cobros, setCobros] = useState([]);
   const [productos, setProductos] = useState([]);
+  const [cliente, setCliente] = useState(null);
   const { nombresDiseno } = useCatalogo();
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -79,7 +55,12 @@ export default function DetalleVenta() {
     setError(null);
     try {
       const [v, cs] = await Promise.all([obtenerVenta(id), listarCobros(id)]);
-      const dets = await listarDetalles(v.id_pedido);
+      const [dets, pedido] = await Promise.all([
+        listarDetalles(v.id_pedido),
+        obtenerPedido(v.id_pedido),
+      ]);
+      const cli = await obtenerCliente(pedido.id_cliente).catch(() => null);
+      setCliente(cli);
       setVenta(v);
       setCobros(cs);
       setProductos(dets);
@@ -111,7 +92,7 @@ export default function DetalleVenta() {
     const valor = e.target.value;
     setForm((f) => {
       const nuevo = { ...f, [campo]: valor };
-      // Un cobro total tiene que cubrir todo el saldo.
+
       if (campo === 'tipo_cobro' && valor === 'total')
         nuevo.monto = String(saldo);
       return nuevo;
@@ -150,14 +131,6 @@ export default function DetalleVenta() {
     }
   };
 
-  const resumen = venta && [
-    ['Importe total', formatMoneda(venta.importe_total)],
-    ['Total cobrado', formatMoneda(venta.total_cobrado)],
-    ['Saldo pendiente', formatMoneda(venta.saldo_pendiente)],
-    ['Fecha de venta', formatFechaHora(venta.fecha_venta)],
-    ['Registrada por', `Usuario #${venta.id_usuario}`],
-  ];
-
   return (
     <>
       <PageHeader
@@ -179,6 +152,15 @@ export default function DetalleVenta() {
                 onClick={() => navigate(`/pedidos/${venta.id_pedido}`)}
               >
                 Ver pedido
+              </Button>
+            )}
+            {venta && (
+              <Button
+                variant="outline"
+                icon={<Printer />}
+                onClick={() => window.print()}
+              >
+                Imprimir boleta
               </Button>
             )}
             {venta && (
@@ -216,61 +198,19 @@ export default function DetalleVenta() {
       )}
 
       {!cargando && venta && (
-        <div className={styles.form}>
-          <section className={styles.section} aria-labelledby="sec-resumen">
-            <h2 id="sec-resumen" className={styles.sectionTitle}>
-              Resumen
-            </h2>
-            <dl className={styles.grid}>
-              {resumen.map(([etiqueta, valor]) => (
-                <div key={etiqueta}>
-                  <dt>{etiqueta}</dt>
-                  <dd>{valor}</dd>
-                </div>
-              ))}
-              <div>
-                <dt>Estado</dt>
-                <dd>
-                  <StatusTag status={saldo === 0 ? 'Pagada' : 'Con saldo'} />
-                </dd>
-              </div>
-            </dl>
-          </section>
-
-          <section className={styles.section} aria-labelledby="sec-productos">
-            <div className={listado.tituloFila}>
-              <h2 id="sec-productos" className={styles.sectionTitle}>
-                Productos
-              </h2>
-            </div>
-            <DataTable
-              caption="Productos de la venta"
-              columns={columnasAberturas(nombresDiseno)}
-              rows={productos}
-              rowKey="id_detalle_pedido"
-              emptyMessage="El pedido no tiene productos."
-            />
-          </section>
-
-          <section className={styles.section} aria-labelledby="sec-cobros">
-            <div className={listado.tituloFila}>
-              <h2 id="sec-cobros" className={styles.sectionTitle}>
-                Cobros
-              </h2>
-            </div>
-            <DataTable
-              caption="Cobros de la venta"
-              columns={COLUMNAS}
-              rows={cobros}
-              rowKey="id_cobro"
-              emptyMessage="Todavía no hay cobros registrados."
-            />
-            <p>
-              Los cobros no se modifican ni se borran. Los cobros en efectivo
-              generan una entrada en la caja abierta.
-            </p>
-          </section>
-        </div>
+        <>
+          <Boleta
+            venta={venta}
+            cliente={cliente}
+            productos={productos}
+            cobros={cobros}
+            nombresDiseno={nombresDiseno}
+          />
+          <p>
+            Los cobros no se modifican ni se borran. Los cobros en efectivo
+            generan una entrada en la caja abierta.
+          </p>
+        </>
       )}
 
       <ModalFormulario

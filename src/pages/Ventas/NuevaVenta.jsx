@@ -8,12 +8,18 @@ import {
   Input,
   PageHeader,
   RowActions,
+  SearchSelect,
   Select,
   Textarea,
 } from '../../components';
 import { URL_LOGIN } from '../../api/client.js';
 import { mensajesDeError } from '../../api/errores.js';
-import { listarClientes, nombreCliente } from '../Clientes/clientes.api.js';
+import {
+  FILTROS_CLIENTE,
+  listarClientes,
+  nombreCliente,
+  opcionesClientes,
+} from '../Clientes/clientes.api.js';
 import AberturaModal from '../Pedidos/AberturaModal.jsx';
 import { columnasAberturas } from '../Pedidos/aberturas.js';
 import {
@@ -32,41 +38,31 @@ const MODOS = [
   { value: 'existente', label: 'Usar un pedido existente' },
 ];
 
-/**
- * Pantalla "Nueva venta": /ventas-cobros/nueva[?pedido=ID].
- * Un solo flujo: pedido (nuevo o existente) -> productos -> importe.
- * Al registrar crea, en orden: el pedido (si es nuevo), sus productos y la
- * venta. Si algo falla a mitad de camino, lo ya creado se conserva y al
- * reintentar solo se completa lo que falta.
- */
 export default function NuevaVenta() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const pedidoInicial = params.get('pedido') ?? '';
 
-  const { opcionesDiseno, nombresDiseno } = useCatalogo();
+  const { opcionesDiseno, filtrosDiseno, nombresDiseno } = useCatalogo();
 
-  // 1. Datos base de la API.
   const [clientes, setClientes] = useState([]);
   const [pedidos, setPedidos] = useState([]);
   const [ventas, setVentas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [errorCarga, setErrorCarga] = useState(null);
 
-  // 2. Formulario.
   const [modo, setModo] = useState(pedidoInicial ? 'existente' : 'nuevo');
   const [idCliente, setIdCliente] = useState('');
   const [observaciones, setObservaciones] = useState('');
   const [idPedido, setIdPedido] = useState(pedidoInicial);
-  const [yaCargados, setYaCargados] = useState([]); // productos del pedido en la API
-  const [cola, setCola] = useState([]); // productos agregados, todavía sin guardar
+  const [yaCargados, setYaCargados] = useState([]);
+  const [cola, setCola] = useState([]);
   const [importe, setImporte] = useState('');
   const [modal, setModal] = useState(false);
 
-  // 3. Envío.
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
-  const [pedidoCreado, setPedidoCreado] = useState(null); // id, si ya se creó
+  const [pedidoCreado, setPedidoCreado] = useState(null);
 
   useEffect(() => {
     Promise.all([listarClientes(), listarPedidos(), listarVentas()])
@@ -79,7 +75,6 @@ export default function NuevaVenta() {
       .finally(() => setCargando(false));
   }, []);
 
-  // Al elegir un pedido existente se traen sus productos.
   useEffect(() => {
     if (modo !== 'existente' || !idPedido) {
       setYaCargados([]);
@@ -100,15 +95,8 @@ export default function NuevaVenta() {
     [clientes],
   );
 
-  const opcionesCliente = useMemo(
-    () =>
-      clientes
-        .filter((c) => c.activo)
-        .map((c) => ({ value: String(c.id_cliente), label: nombreCliente(c) })),
-    [clientes],
-  );
+  const opcionesCliente = useMemo(() => opcionesClientes(clientes), [clientes]);
 
-  // Solo pedidos que todavía no tienen venta.
   const opcionesPedido = useMemo(() => {
     const vendidos = new Set(ventas.map((v) => v.id_pedido));
     return pedidos
@@ -120,7 +108,7 @@ export default function NuevaVenta() {
   }, [pedidos, ventas, nombrePorCliente]);
 
   const pedidoElegido = pedidos.find((p) => String(p.id_pedido) === idPedido);
-  // Solo un pedido pendiente admite productos nuevos.
+
   const admiteProductos =
     modo === 'nuevo' ||
     pedidoCreado !== null ||
@@ -171,7 +159,7 @@ export default function NuevaVenta() {
         id = pedido.id_pedido;
         setPedidoCreado(id);
       }
-      // Los productos ya guardados salen de la cola (así un reintento no los repite).
+
       for (const item of cola) {
         const { clave, ...datos } = item;
         await crearDetalle(id, datos);
@@ -260,13 +248,15 @@ export default function NuevaVenta() {
                     hint="Solo clientes activos."
                   >
                     {(field) => (
-                      <Select
+                      <SearchSelect
                         {...field}
-                        placeholder="Seleccioná un cliente"
+                        placeholder="Buscá un cliente"
+                        searchPlaceholder="Nombre, DNI/CUIT, teléfono..."
                         options={opcionesCliente}
+                        filters={FILTROS_CLIENTE}
                         value={idCliente}
                         disabled={bloqueado}
-                        onChange={(e) => setIdCliente(e.target.value)}
+                        onChange={setIdCliente}
                       />
                     )}
                   </FormField>
@@ -299,14 +289,15 @@ export default function NuevaVenta() {
                   hint="Solo pedidos que todavía no tienen venta."
                 >
                   {(field) => (
-                    <Select
+                    <SearchSelect
                       {...field}
-                      placeholder="Seleccioná un pedido"
+                      placeholder="Buscá un pedido"
+                      searchPlaceholder="N° de pedido o cliente..."
                       options={opcionesPedido}
                       value={idPedido}
                       disabled={bloqueado}
-                      onChange={(e) => {
-                        setIdPedido(e.target.value);
+                      onChange={(v) => {
+                        setIdPedido(v);
                         setCola([]);
                       }}
                     />
@@ -395,6 +386,7 @@ export default function NuevaVenta() {
       <AberturaModal
         open={modal}
         opcionesDiseno={opcionesDiseno}
+        filtrosDiseno={filtrosDiseno}
         onSubmit={agregar}
         onCancel={() => setModal(false)}
       />

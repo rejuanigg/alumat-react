@@ -24,22 +24,18 @@ import styles from '../Listado.module.css';
 
 const POR_PAGINA = 8;
 
-/** Pantalla "Diseños". Datos de /api/disenos/ y /api/productos/. */
 export default function Disenos() {
   const navigate = useNavigate();
 
-  // 1. Datos, carga y error.
   const [disenos, setDisenos] = useState([]);
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  // 2. Filtros y página.
   const [busqueda, setBusqueda] = useState('');
   const [producto, setProducto] = useState('');
   const [pagina, setPagina] = useState(1);
 
-  // 3. Acciones: baja/reactivación y cambio de nombre.
   const [aRenombrar, setARenombrar] = useState(null);
   const [nombreNuevo, setNombreNuevo] = useState('');
   const [procesando, setProcesando] = useState(false);
@@ -258,7 +254,6 @@ export default function Disenos() {
   );
 }
 
-/** Mensaje de error dentro de la tabla, con reintento o enlace al login. */
 function MensajeError({ error, onRetry }) {
   return (
     <span className={styles.error} role="alert">

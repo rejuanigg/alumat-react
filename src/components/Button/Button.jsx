@@ -1,10 +1,6 @@
 import { cx } from '../_utils/cx.js';
 import styles from './Button.module.css';
 
-/**
- * Botón de texto.
- * variant: "primary" | "outline" | "danger"
- */
 export default function Button({
   variant = 'primary',
   icon,

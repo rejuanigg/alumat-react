@@ -3,13 +3,6 @@ import { useId } from 'react';
 import { cx } from '../_utils/cx.js';
 import styles from './FormField.module.css';
 
-/**
- * Etiqueta + control + ayuda + error, conectados por id.
- * children es una función que recibe las props para el control:
- *   <FormField label="Nombre" required error={err}>
- *     {(field) => <Input {...field} />}
- *   </FormField>
- */
 export default function FormField({
   label,
   required = false,

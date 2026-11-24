@@ -22,7 +22,6 @@ import styles from './Clientes.module.css';
 
 const POR_PAGINA = 5;
 
-// "value" es el valor de `activo` como texto, para compararlo con el Select.
 const OPCIONES_ESTADO = [
   { value: 'true', label: 'Activo' },
   { value: 'false', label: 'Inactivo' },
@@ -45,7 +44,6 @@ const COLUMNAS = [
   },
 ];
 
-// Campos en los que busca el SearchBar.
 const CAMPOS_BUSQUEDA = [
   'nombre',
   'apellido',
@@ -57,16 +55,13 @@ const CAMPOS_BUSQUEDA = [
   'direccion',
 ];
 
-/** Pantalla "Gestión de clientes". Datos de /api/clientes/. */
 export default function Clientes() {
   const navigate = useNavigate();
 
-  // 1. Datos, carga y error.
   const [clientes, setClientes] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  // 2. Filtros, página y baja.
   const [busqueda, setBusqueda] = useState('');
   const [estado, setEstado] = useState('');
   const [pagina, setPagina] = useState(1);
@@ -90,7 +85,6 @@ export default function Clientes() {
     cargar();
   }, [cargar]);
 
-  // 3. Filtrado.
   const filtrados = useMemo(() => {
     const texto = busqueda.trim().toLowerCase();
     return clientes.filter(
@@ -106,11 +100,9 @@ export default function Clientes() {
     );
   }, [clientes, busqueda, estado]);
 
-  // 4. Indicadores: sobre el total de clientes, no sobre lo filtrado.
   const activos = clientes.filter((c) => c.activo).length;
   const inactivos = clientes.length - activos;
 
-  // 5. Paginación. Si la última página queda vacía, se retrocede.
   const totalPaginas = Math.max(1, Math.ceil(filtrados.length / POR_PAGINA));
   const paginaActual = Math.min(pagina, totalPaginas);
   const visibles = filtrados.slice(
@@ -129,7 +121,6 @@ export default function Clientes() {
     setPagina(1);
   };
 
-  // El backend no borra clientes: los da de baja (activo = false).
   const confirmarBaja = async () => {
     setDesactivando(true);
     setErrorBaja(null);
@@ -233,7 +224,7 @@ export default function Clientes() {
             <RowActions
               itemName={nombreCliente(fila)}
               onEdit={() => editarCliente(fila)}
-              // Solo se puede dar de baja a un cliente activo.
+
               onDelete={fila.activo ? () => setADesactivar(fila) : undefined}
             />
           )}
@@ -266,7 +257,6 @@ export default function Clientes() {
   );
 }
 
-/** Mensaje de error dentro de la tabla, con reintento o enlace al login. */
 function MensajeError({ error, onRetry }) {
   return (
     <span className={styles.error} role="alert">

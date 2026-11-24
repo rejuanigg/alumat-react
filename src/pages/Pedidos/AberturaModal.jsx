@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { FormField, Input, Select, Textarea } from '../../components';
+import { FormField, Input, SearchSelect, Select, Textarea } from '../../components';
 import ModalFormulario from '../Cajas/ModalFormulario.jsx';
 import {
   COLORES_ALUMINIO,
@@ -19,15 +19,10 @@ const VACIO = {
   observaciones: '',
 };
 
-/**
- * Modal para cargar una abertura (producto + medidas + terminaciones).
- * Valida y llama a onSubmit(datos), con los datos como los pide la API.
- * La página decide qué hacer (guardar en la API o en una lista) y cierra
- * el modal. `error` es un error que viene de la página.
- */
 export default function AberturaModal({
   open,
   opcionesDiseno,
+  filtrosDiseno = [],
   onSubmit,
   onCancel,
   busy = false,
@@ -36,7 +31,6 @@ export default function AberturaModal({
   const [form, setForm] = useState(VACIO);
   const [errorLocal, setErrorLocal] = useState(null);
 
-  // Cada vez que se abre, arranca vacío.
   useEffect(() => {
     if (open) {
       setForm(VACIO);
@@ -94,11 +88,14 @@ export default function AberturaModal({
       )}
       <FormField label="Producto - Diseño" required>
         {(field) => (
-          <Select
+          <SearchSelect
             {...field}
-            placeholder="Seleccioná un diseño"
+            placeholder="Buscá un producto o diseño"
+            searchPlaceholder="Producto o diseño..."
             options={opcionesDiseno}
-            {...campo('id_diseno')}
+            filters={filtrosDiseno}
+            value={form.id_diseno}
+            onChange={(v) => setForm((f) => ({ ...f, id_diseno: v }))}
           />
         )}
       </FormField>

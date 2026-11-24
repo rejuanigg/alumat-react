@@ -1,4 +1,3 @@
-/** Junta los mensajes de un ApiError (400: { campo: [msgs] }) en una línea. */
 export function mensajesDeError(error) {
   const errores = error?.errores;
   if (!errores || typeof errores !== 'object') return error.message;

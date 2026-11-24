@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router';
 import {
+  House,
   Users,
   Package,
   Palette,
@@ -9,8 +10,10 @@ import {
   CircleUser,
 } from 'lucide-react';
 import Logo from '../../icon.png';
+import Letters from '../../letters.png';
 
 const enlaces = [
+  { to: '/', label: 'Inicio', icon: House },
   { to: '/clientes', label: 'Clientes', icon: Users },
   { to: '/productos', label: 'Productos', icon: Package },
   { to: '/disenos', label: 'Diseños', icon: Palette },
@@ -19,20 +22,6 @@ const enlaces = [
   { to: '/cajas', label: 'Cajas', icon: Wallet },
 ];
 
-/**
- * Menú lateral de ALUMAT. Debe usarse dentro de BrowserRouter.
- *
- * Props:
- * - logo: contenido de marca; por defecto, "ALUMAT".
- * - items: lista de objetos { to, label, icon }.
- *   icon es un componente de ícono opcional.
- * - user: usuario opcional { name, role, actions: [{ label, onClick }] }.
- *   Se muestra al pie con su ícono y un desplegable de opciones.
- * - onNavigate: función opcional al seleccionar un enlace.
- * - className: clases adicionales para el contenedor.
- *
- * NavLink indica la ruta activa mediante aria-current="page".
- */
 export default function Sidebar({
   logo = Logo,
   items = enlaces,
@@ -43,14 +32,20 @@ export default function Sidebar({
   return (
     <aside className={`sidebar ${className}`.trim()}>
       <NavLink to="/" className="sidebar-brand">
-        <img src={logo} alt="ALUMAT" />
+        <img src={logo} alt="ALUMAT" className="sidebar-brand-logo" />
+        <img src={Letters} alt="" className="sidebar-brand-letters" />
       </NavLink>
 
       <nav aria-label="Navegación principal">
         <ul className="sidebar-menu">
           {items.map(({ to, label, icon: Icon }) => (
             <li key={to}>
-              <NavLink to={to} className="sidebar-link" onClick={onNavigate}>
+              <NavLink
+                to={to}
+                end={to === '/'}
+                className="sidebar-link"
+                onClick={onNavigate}
+              >
                 {Icon && <Icon className="sidebar-icon" aria-hidden="true" />}
                 <span>{label}</span>
               </NavLink>

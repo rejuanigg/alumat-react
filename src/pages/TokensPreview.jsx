@@ -1,8 +1,5 @@
 import './TokensPreview.css';
 
-// Página temporal para revisar los design tokens (ruta /tokens).
-// Los valores se leen de las variables CSS: acá no se escribe ningún valor.
-
 const grupos = [
   {
     titulo: 'Marca',

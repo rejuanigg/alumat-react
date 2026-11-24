@@ -10,7 +10,6 @@
   white-space: nowrap;
 }
 
-/* Contraste texto/fondo: ver README → Componentes → Badge. */
 .success {
   color: var(--color-success-text);
   background-color: var(--color-success-bg);

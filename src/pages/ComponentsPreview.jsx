@@ -37,9 +37,6 @@ import {
   validarFormulario,
 } from './componentsPreview.data.js';
 
-// Página temporal para revisar los componentes base (ruta /componentes).
-// Para sumar un componente: agregá su <Seccion> y su link en SECCIONES.
-
 const SECCIONES = [
   { id: 'button', titulo: 'Button' },
   { id: 'icon-button', titulo: 'IconButton y RowActions' },
@@ -84,7 +81,6 @@ function Muestra({ titulo, children }) {
   );
 }
 
-/** Formulario de ejemplo: al enviar vacío muestra errores y enfoca el primero. */
 function FormularioEjemplo() {
   const [valores, setValores] = useState(FORM_INICIAL);
   const [errores, setErrores] = useState({});
@@ -203,21 +199,6 @@ export default function ComponentsPreview() {
   const [pestana, setPestana] = useState('datos');
   const [modalAbierto, setModalAbierto] = useState(false);
   const accion = (texto) => () => setUltimaAccion(texto);
-
-  // Componentes pendientes (los programa otra persona del equipo).
-  // Cuando se apliquen, sumá su <Seccion> al final del <main> y su link en SECCIONES.
-  // TODO: agregar <MainLayout> cuando se aplique
-  // TODO: agregar <Sidebar> cuando se aplique
-  // TODO: agregar <Header> cuando se aplique
-  // TODO: agregar <PageHeader> cuando se aplique
-  // TODO: agregar <StatCard> cuando se aplique
-  // TODO: agregar <DataTable> cuando se aplique
-  // TODO: agregar <Pagination> cuando se aplique
-  // TODO: agregar <Tabs> cuando se aplique
-  // TODO: agregar <SearchBar> cuando se aplique
-  // TODO: agregar <FilterBar> cuando se aplique
-  // TODO: agregar <ProductCard> cuando se aplique
-  // TODO: agregar <ConfirmModal> cuando se aplique
 
   return (
     <main className={styles.page}>

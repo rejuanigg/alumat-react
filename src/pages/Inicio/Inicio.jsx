@@ -19,10 +19,6 @@ const ACCESOS = [
   { to: '/cajas', label: 'Ir a la caja' },
 ];
 
-/**
- * Pantalla de inicio: resumen con datos de la API.
- * Cada consulta es independiente: si una falla, las demás se siguen mostrando.
- */
 export default function Inicio() {
   const navigate = useNavigate();
   const [datos, setDatos] = useState(null);
@@ -44,7 +40,6 @@ export default function Inicio() {
     cargar();
   }, [cargar]);
 
-  // Valor de una consulta, o "—" si todavía carga o falló.
   const valor = (resultado, transformar) =>
     cargando || resultado?.status !== 'fulfilled'
       ? '—'

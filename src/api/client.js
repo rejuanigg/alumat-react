@@ -1,12 +1,5 @@
-/**
- * Cliente HTTP para la API de Django.
- * Usa la sesión de Django (cookie sessionid) y envía el token CSRF en
- * cada escritura. Ver docs/API_FRONTEND.md del backend.
- */
-
 export const URL_LOGIN = '/login';
 
-/** Error de la API. `errores` es el cuerpo JSON: { campo: ['mensaje'] } o { detail }. */
 export class ApiError extends Error {
   constructor(status, errores) {
     super(mensajeDeError(status, errores));
@@ -34,10 +27,6 @@ function mensajeDeError(status, errores) {
   return `Error inesperado del servidor (${status}).`;
 }
 
-/**
- * Hace una petición a la API y devuelve el JSON de la respuesta.
- * Lanza ApiError si la respuesta no es 2xx.
- */
 export async function api(metodo, url, datos) {
   const headers = { Accept: 'application/json' };
   if (datos !== undefined) headers['Content-Type'] = 'application/json';

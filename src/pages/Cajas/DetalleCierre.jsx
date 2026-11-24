@@ -4,22 +4,22 @@ import { ArrowLeft, Lock } from 'lucide-react';
 import { Button, PageHeader, StatusTag } from '../../components';
 import { URL_LOGIN } from '../../api/client.js';
 import {
+  listarCobros,
   listarMovimientos,
   obtenerApertura,
   obtenerCierre,
 } from './cajas.api.js';
-import { formatFechaHora, formatMoneda } from './formatos.js';
+import { cobrosNoEfectivo, formatFechaHora, formatMoneda } from './formatos.js';
+import CobrosNoEfectivoTab from './CobrosNoEfectivoTab.jsx';
 import MovimientosTab from './MovimientosTab.jsx';
 import formStyles from '../Clientes/ClienteForm.module.css';
 
-/** Estado de la diferencia (contado - esperado) para el StatusTag. */
 function estadoDiferencia(diferencia) {
   const n = Number(diferencia);
   if (n === 0) return 'Sin diferencia';
   return n < 0 ? 'Faltante' : 'Sobrante';
 }
 
-/** Pantalla "Detalle de cierre": /cajas/cierres/:id. */
 export default function DetalleCierre() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ export default function DetalleCierre() {
   const [cierre, setCierre] = useState(null);
   const [apertura, setApertura] = useState(null);
   const [movimientos, setMovimientos] = useState([]);
+  const [cobros, setCobros] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
@@ -35,12 +36,14 @@ export default function DetalleCierre() {
     setError(null);
     try {
       const c = await obtenerCierre(id);
-      const [ap, movs] = await Promise.all([
+      const [ap, movs, cobs] = await Promise.all([
         obtenerApertura(c.id_apertura),
         listarMovimientos(),
+        listarCobros(),
       ]);
       setCierre(c);
       setApertura(ap);
+      setCobros(cobrosNoEfectivo(cobs, ap, c));
       setMovimientos(
         movs
           .filter((m) => m.id_apertura === c.id_apertura)
@@ -134,6 +137,13 @@ export default function DetalleCierre() {
               Movimientos de la apertura
             </h2>
             <MovimientosTab movimientos={movimientos} cajaAbierta={false} />
+          </section>
+
+          <section className={formStyles.section} aria-labelledby="sec-elec">
+            <h2 id="sec-elec" className={formStyles.sectionTitle}>
+              Transferencias y tarjetas
+            </h2>
+            <CobrosNoEfectivoTab cobros={cobros} cajaAbierta={false} />
           </section>
         </div>
       )}

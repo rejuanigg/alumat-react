@@ -7,7 +7,7 @@ import {
   FormField,
   Input,
   PageHeader,
-  Select,
+  SearchSelect,
 } from '../../components';
 import { ApiError } from '../../api/client.js';
 import {
@@ -19,15 +19,10 @@ import styles from './NuevoDiseno.module.css';
 
 const INICIAL = { id_producto: '', nombre: '' };
 
-/**
- * Pantalla "Nuevo diseño".
- * Datos de /api/productos/ y /api/disenos/.
- */
 export default function NuevoDiseno() {
   const navigate = useNavigate();
   const volver = () => navigate('/disenos');
 
-  // 1. Estado del formulario.
   const [form, setForm] = useState(INICIAL);
   const [errores, setErrores] = useState({});
   const [guardando, setGuardando] = useState(false);
@@ -38,7 +33,6 @@ export default function NuevoDiseno() {
     setErrores((e) => ({ ...e, [campo]: undefined }));
   };
 
-  // 2. Productos activos para el combo y diseños del producto elegido.
   const [productos, setProductos] = useState([]);
   const [registrados, setRegistrados] = useState([]);
 
@@ -64,7 +58,21 @@ export default function NuevoDiseno() {
       productos.map((p) => ({
         value: String(p.id_producto),
         label: p.nombre,
+        description: p.tipo_abertura,
+        filtros: { tipo_abertura: p.tipo_abertura },
       })),
+    [productos],
+  );
+  const filtrosProducto = useMemo(
+    () => [
+      {
+        name: 'tipo_abertura',
+        label: 'Tipo de abertura',
+        options: [...new Set(productos.map((p) => p.tipo_abertura))]
+          .filter(Boolean)
+          .map((t) => ({ value: t, label: t })),
+      },
+    ],
     [productos],
   );
   const producto = productos.find(
@@ -81,7 +89,6 @@ export default function NuevoDiseno() {
     { key: 'producto', label: 'Producto' },
   ];
 
-  // 3. Validación y envío.
   function validar() {
     const e = {};
     if (!form.id_producto) e.id_producto = 'Seleccioná un producto.';
@@ -101,7 +108,6 @@ export default function NuevoDiseno() {
       });
       navigate('/disenos');
     } catch (error) {
-      // 400: { campo: ['mensaje'] }. El campo del form "nombre" es nombre_diseno.
       if (error instanceof ApiError && error.status === 400) {
         const { nombre_diseno, id_producto, ...resto } = error.errores;
         const nuevos = {};
@@ -142,12 +148,14 @@ export default function NuevoDiseno() {
           <div className={styles.grid}>
             <FormField label="Producto" required error={errores.id_producto}>
               {(field) => (
-                <Select
+                <SearchSelect
                   {...field}
-                  placeholder="Seleccione un producto"
+                  placeholder="Buscá un producto"
+                  searchPlaceholder="Nombre o tipo de abertura..."
                   options={opcionesProducto}
+                  filters={filtrosProducto}
                   value={form.id_producto}
-                  onChange={cambiar('id_producto')}
+                  onChange={(v) => cambiar('id_producto')({ target: { value: v } })}
                 />
               )}
             </FormField>

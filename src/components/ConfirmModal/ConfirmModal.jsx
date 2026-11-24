@@ -1,20 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 import Button from '../Button/index.js';
 
-/**
- * Confirmación modal mediante dialog nativo.
- *
- * Props:
- * - open: indica si debe mostrarse.
- * - title: título de la confirmación.
- * - message: explicación de la acción.
- * - onConfirm: función al confirmar.
- * - onCancel: función que debe actualizar open a false.
- * - confirmLabel / cancelLabel: textos de los botones.
- * - busy: bloquea las acciones mientras se procesa la operación.
- *
- * La página controla open y cierra el modal al finalizar.
- */
 export default function ConfirmModal({
   open = false,
   title = 'Confirmar eliminación',

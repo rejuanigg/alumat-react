@@ -16,7 +16,6 @@ const OPCIONES_ESTADO = [
   { value: 'false', label: 'Inactivo' },
 ];
 
-/** Convierte un producto de la API en valores del formulario (todo texto). */
 export function valoresDesdeProducto(producto) {
   return Object.fromEntries(
     Object.keys(PRODUCTO_VACIO).map((campo) => [
@@ -33,7 +32,6 @@ function validar(v) {
   return e;
 }
 
-/** Los 400 del backend vienen como { campo: ['mensaje'] }. */
 function erroresDelServidor(cuerpo) {
   const e = {};
   for (const [campo, msgs] of Object.entries(cuerpo ?? {})) {
@@ -44,11 +42,6 @@ function erroresDelServidor(cuerpo) {
   return e;
 }
 
-/**
- * Formulario de producto (alta y edición).
- * onGuardar(datos) debe guardar y navegar; si falla con ApiError se muestran
- * los errores.
- */
 export default function ProductoForm({
   inicial = PRODUCTO_VACIO,
   onGuardar,
@@ -61,9 +54,12 @@ export default function ProductoForm({
   const [errorGeneral, setErrorGeneral] = useState(null);
   const [guardando, setGuardando] = useState(false);
 
+  const inactivo = mostrarEstado && inicial.activo === 'false';
+
   const control = (campo) => ({
     name: campo,
     value: valores[campo],
+    disabled: guardando || (inactivo && campo !== 'activo'),
     onChange: (evento) => {
       setValores((v) => ({ ...v, [campo]: evento.target.value }));
       setErrores((e) => ({ ...e, [campo]: undefined }));
@@ -140,7 +136,15 @@ export default function ProductoForm({
           </FormField>
 
           {mostrarEstado && (
-            <FormField label="Estado" error={errores.activo}>
+            <FormField
+              label="Estado"
+              error={errores.activo}
+              hint={
+                inactivo
+                  ? 'Producto inactivo: reactivalo para poder editar sus datos.'
+                  : undefined
+              }
+            >
               {(field) => (
                 <Select
                   {...field}

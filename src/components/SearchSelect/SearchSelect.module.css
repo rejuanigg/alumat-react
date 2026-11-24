@@ -1,0 +1,230 @@
+.raiz {
+  position: relative;
+  width: 100%;
+}
+
+.disparador {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--space-10);
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  text-align: left;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--duration-fast);
+}
+
+.disparador:hover:not(:disabled),
+.disparador:focus-visible,
+.disparador[aria-expanded='true'] {
+  border-color: var(--color-primary);
+}
+
+.disparador:disabled {
+  background-color: var(--color-bg);
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.invalido,
+.invalido:hover:not(:disabled) {
+  border-color: var(--color-danger);
+}
+
+.icono {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  color: var(--color-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.limpiar {
+  position: absolute;
+  top: 50%;
+  right: var(--space-8);
+  display: grid;
+  place-items: center;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  padding: 0;
+  color: var(--color-text-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.limpiar:hover {
+  color: var(--color-danger);
+}
+
+.limpiar svg {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.etiqueta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.descripcion {
+  overflow: hidden;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeholder {
+  color: var(--color-text-muted);
+}
+
+/* El panel va en el flujo (no flotante) para no quedar recortado
+   dentro de los modales, que tienen scroll propio. */
+.panel {
+  margin-top: var(--space-1);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.busqueda {
+  position: relative;
+  padding: var(--space-2);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.lupa {
+  position: absolute;
+  top: 50%;
+  left: var(--space-4);
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  color: var(--color-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.entrada {
+  width: 100%;
+  min-height: var(--space-8);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-8);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+}
+
+.entrada:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  background: var(--color-surface-soft);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.filtro {
+  display: flex;
+  flex: 1 1 8rem;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.filtroEtiqueta {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+
+.borrarFiltros {
+  padding: var(--space-2);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.lista {
+  max-height: 14rem;
+  margin: 0;
+  padding: var(--space-1);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.activa {
+  background: var(--color-surface-highlight);
+}
+
+.marcada .etiqueta {
+  font-weight: var(--font-weight-semibold);
+}
+
+.tilde {
+  flex: none;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  color: var(--color-primary);
+}
+
+.estado {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.entrada::-webkit-search-cancel-button,
+.entrada::-webkit-search-decoration {
+  appearance: none;
+  display: none;
+}

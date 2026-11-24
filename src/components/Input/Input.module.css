@@ -1,4 +1,3 @@
-/* .control y .invalid también los usan Select y Textarea (composes). */
 .control {
   width: 100%;
   min-height: var(--space-10);

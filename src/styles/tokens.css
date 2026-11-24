@@ -1,48 +1,37 @@
-/*
- * Design tokens de ALUMAT.
- * Este es el ÚNICO archivo donde se escriben valores a mano (colores, px,
- * sombras). En el resto del código siempre se usa var(--token).
- * Documentación: README.md → "Design tokens".
- */
-
 :root {
-  /* ── Colores de marca ─────────────────────────────────────────── */
-  --color-primary: #1a68e0; /* botones, ítem activo del sidebar */
+  --color-primary: #1a68e0;
   --color-primary-hover: #1556b5;
-  --color-primary-strong: #0a3d91; /* títulos de panel, encabezado de tabla */
-  --color-header: #0b3278; /* topbar; degradé hacia --color-primary-strong */
+  --color-primary-strong: #0a3d91;
+  --color-header: #0b3278;
   --color-sidebar-start: #0b2f73;
   --color-sidebar-end: #0a4fb5;
-  --color-bg: #f3f6fc; /* fondo de la app */
-  --color-surface: #ffffff; /* tarjetas */
-  --color-surface-soft: #e0eefc; /* fondos azulados suaves */
-  --color-surface-highlight: #d4e6fb; /* fila "Saldo actual" */
+  --color-bg: #f3f6fc;
+  --color-surface: #ffffff;
+  --color-surface-soft: #e0eefc;
+  --color-surface-highlight: #d4e6fb;
   --color-border: #e3eaf5;
-  --color-input-border: #7489a8; /* borde de campos: 3.57:1 sobre blanco (WCAG 1.4.11) */
-  --color-grid: #dbe4f2; /* líneas de gráficos */
+  --color-input-border: #7489a8;
+  --color-grid: #dbe4f2;
 
-  /* ── Texto ────────────────────────────────────────────────────── */
   --color-text: #0b1f3f;
   --color-text-body: #12294d;
   --color-text-muted: #334e73;
   --color-text-on-dark: #ffffff;
 
-  /* ── Estados y categorías ─────────────────────────────────────── */
-  --color-success: #17803a; /* activo / pagada */
+  --color-success: #17803a;
   --color-success-bg: #d8f3de;
-  --color-success-text: #167837; /* texto sobre --color-success-bg (4.71:1) */
-  --color-danger: #c0262d; /* inactivo / eliminar */
+  --color-success-text: #167837;
+  --color-danger: #c0262d;
   --color-danger-bg: #fbdcdc;
-  --color-danger-hover: #a01f25; /* hover de botones de peligro (blanco 7.73:1) */
-  --color-warning: #d9701a; /* pendiente / saldo */
+  --color-danger-hover: #a01f25;
+  --color-warning: #d9701a;
   --color-warning-bg: #fde7d3;
-  --color-warning-text: #a15313; /* texto sobre --color-warning-bg (4.66:1) */
-  --color-accent: #6a3fc2; /* diseños / categorías */
+  --color-warning-text: #a15313;
+  --color-accent: #6a3fc2;
   --color-accent-bg: #e9e2fa;
   --color-info: #1556b5;
   --color-info-bg: #e0eefc;
 
-  /* ── Estados de pedido (badges) ───────────────────────────────── */
   --status-process-bg: #fde7a8;
   --status-process-fg: #7a3e00;
   --status-pending-bg: #fbc9c9;
@@ -50,25 +39,22 @@
   --status-done-bg: #c4f0cf;
   --status-done-fg: #12652f;
 
-  /* ── Tarjetas de indicadores (KPI) ────────────────────────────── */
   --kpi-clients-bg: #e0eefc;
   --kpi-clients-fg: #1556b5;
   --kpi-products-bg: #e9e2fa;
   --kpi-products-fg: #6a3fc2;
   --kpi-orders-bg: #dcf4e2;
   --kpi-orders-fg: #1f8a3b;
-  --kpi-orders-text: #1b7934; /* texto/ícono sobre --kpi-orders-bg (4.72:1) */
+  --kpi-orders-text: #1b7934;
   --kpi-sales-bg: #fde7d3;
   --kpi-sales-fg: #d9701a;
-  --kpi-sales-text: #a15313; /* texto/ícono sobre --kpi-sales-bg (4.66:1) */
+  --kpi-sales-text: #a15313;
 
-  /* ── Gráficos y otros ─────────────────────────────────────────── */
   --color-chart-line: #1d6df0;
   --color-chart-fill: #3d8bff;
   --color-notification: #ffb020;
   --color-focus-ring: #1a68e0;
 
-  /* ── Tipografía ───────────────────────────────────────────────── */
   --font-family:
     'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
@@ -90,18 +76,15 @@
   --line-height-tight: 1.15;
   --line-height-base: 1.5;
 
-  /* ── Radios ───────────────────────────────────────────────────── */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-pill: 999px;
 
-  /* ── Sombras ──────────────────────────────────────────────────── */
   --shadow-sm: 0 2px 8px rgba(20, 60, 130, 0.06);
   --shadow-md: 0 4px 14px rgba(20, 60, 130, 0.09);
   --shadow-lg: 0 6px 16px rgba(18, 83, 184, 0.3);
 
-  /* ── Espaciados (escala de 4px) ───────────────────────────────── */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -111,18 +94,15 @@
   --space-8: 32px;
   --space-10: 40px;
 
-  /* ── Bordes, foco y scroll ────────────────────────────────────── */
   --border-width: 1px;
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --scrollbar-size: 8px;
 
-  /* ── Layout ───────────────────────────────────────────────────── */
   --sidebar-width: 280px;
   --topbar-height: 76px;
   --content-padding: var(--space-8);
 
-  /* ── Fondos compuestos ────────────────────────────────────────── */
   --header-bg: linear-gradient(
     90deg,
     var(--color-header),
@@ -133,35 +113,28 @@
     var(--color-sidebar-start),
     var(--color-sidebar-end)
   );
-  /* Con 0.2 el texto blanco mantiene ≥ 4.82:1 en el peor punto de la imagen. */
+
   --sidebar-image-opacity: 0.2;
 
-  /* ── Componentes ──────────────────────────────────────────────── */
   --icon-size-sm: 16px;
   --icon-size-md: 20px;
   --icon-size-lg: 24px;
 
-  --color-overlay: rgba(
-    11,
-    31,
-    63,
-    0.55
-  ); /* fondo detrás de modales y del menú móvil */
-  --color-table-row-alt: var(--color-bg); /* filas alternadas */
+  --color-overlay: rgba(11, 31, 63, 0.55);
+  --color-table-row-alt: var(--color-bg);
   --color-table-row-hover: var(--color-surface-soft);
   --opacity-disabled: 0.55;
   --duration-fast: 150ms;
 
-  --menu-min-width: 180px; /* menú desplegable del usuario */
+  --menu-min-width: 180px;
   --modal-width: 440px;
   --search-min-width: 240px;
-  --card-min-width: 240px; /* ancho mínimo de cards y StatCards en grillas */
+  --card-min-width: 240px;
 
   --z-dropdown: 30;
   --z-sidebar-backdrop: 35;
   --z-sidebar: 40;
 
-  /* Referencia: var() no funciona en media queries. Usar este valor a mano. */
   --breakpoint-md: 960px;
   --layout-min-height: 100vh;
   --duration-reduced-motion: 0.01ms;

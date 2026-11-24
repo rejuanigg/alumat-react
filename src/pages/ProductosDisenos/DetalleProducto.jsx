@@ -11,7 +11,6 @@ const COLUMNAS = [
   { key: 'nombre_diseno', label: 'Diseño' },
 ];
 
-/** Pantalla "Detalle de producto": /productos/:id, con sus diseños. */
 export default function DetalleProducto() {
   const { id } = useParams();
   const navigate = useNavigate();

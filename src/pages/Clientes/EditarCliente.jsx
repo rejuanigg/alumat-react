@@ -11,7 +11,6 @@ import {
 import ClienteForm, { valoresDesdeCliente } from './ClienteForm.jsx';
 import styles from './ClienteForm.module.css';
 
-/** Pantalla "Editar cliente": /clientes/:id/editar. */
 export default function EditarCliente() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -77,7 +76,6 @@ export default function EditarCliente() {
       )}
 
       {!cargando && cliente && (
-        // key: si cambia el cliente, el formulario arranca de cero.
         <ClienteForm
           key={cliente.id_cliente}
           inicial={valoresDesdeCliente(cliente)}

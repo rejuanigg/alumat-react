@@ -1,11 +1,5 @@
 import { api } from '../../api/client.js';
 
-/**
- * Endpoints de pedidos (/api/pedidos/) y sus detalles
- * (/api/pedidos/{id}/detalles/). No hay DELETE de pedidos: se conservan.
- * El estado solo avanza: pendiente -> en_proceso -> finalizado.
- */
-
 export const ESTADOS_PEDIDO = [
   { value: 'pendiente', label: 'Pendiente' },
   { value: 'en_proceso', label: 'En proceso' },
@@ -15,15 +9,12 @@ export const ESTADOS_PEDIDO = [
 export const etiquetaEstado = (estado) =>
   ESTADOS_PEDIDO.find((e) => e.value === estado)?.label ?? estado;
 
-/** Siguiente estado y texto del botón que lo dispara (null si ya terminó). */
 export const SIGUIENTE_ESTADO = {
   pendiente: { estado: 'en_proceso', texto: 'Pasar a En proceso' },
   en_proceso: { estado: 'finalizado', texto: 'Finalizar pedido' },
   finalizado: null,
 };
 
-// Listas de opciones del detalle. La API no las expone: se copian de
-// docs/CONTRATO_API_PEDIDOS.md del backend.
 export const TIPOS_VIDRIO = [
   { value: 'simple_4', label: 'Simple 4 mm' },
   { value: 'dvh_4_9_4', label: 'DVH 4+9+4' },
@@ -49,7 +40,6 @@ export const listarPedidos = () => api('GET', '/api/pedidos/');
 export const obtenerPedido = (id_pedido) =>
   api('GET', `/api/pedidos/${id_pedido}/`);
 
-/** datos: { id_cliente, observaciones } */
 export const crearPedido = (datos) => api('POST', '/api/pedidos/', datos);
 
 export const cambiarEstadoPedido = (id_pedido, estado) =>

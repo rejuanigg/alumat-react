@@ -1,4 +1,3 @@
-/* Se combina con .control e .invalid de Input.module.css (ver el JSX). */
 .textarea {
   resize: vertical;
 }

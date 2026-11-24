@@ -1,10 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 import { Button } from '../../components';
 
-/**
- * Modal con un formulario (dialog nativo, mismo estilo que ConfirmModal).
- * La página controla `open`, `busy` y `error`; onCancel debe poner open en false.
- */
 export default function ModalFormulario({
   open,
   title,

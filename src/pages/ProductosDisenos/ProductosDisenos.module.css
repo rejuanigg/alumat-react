@@ -1,5 +1,3 @@
-/* Estilos de la pantalla Productos. Solo usan tokens. */
-
 .page {
   display: grid;
   gap: var(--space-5);

@@ -4,11 +4,6 @@ import {
   listarProductos,
 } from '../ProductosDisenos/productos.api.js';
 
-/**
- * Diseños y productos de la API para armar aberturas.
- * - opcionesDiseno: solo diseños activos de productos activos (para elegir).
- * - nombresDiseno: "Producto - Diseño" de todos (para mostrar lo ya cargado).
- */
 export default function useCatalogo() {
   const [disenos, setDisenos] = useState([]);
   const [productos, setProductos] = useState([]);
@@ -41,13 +36,35 @@ export default function useCatalogo() {
     const activos = new Set(
       productos.filter((p) => p.activo).map((p) => p.id_producto),
     );
+    const porProducto = Object.fromEntries(
+      productos.map((p) => [p.id_producto, p]),
+    );
     return disenos
       .filter((d) => d.activo && activos.has(d.id_producto))
-      .map((d) => ({
-        value: String(d.id_diseno),
-        label: nombresDiseno[d.id_diseno],
-      }));
-  }, [disenos, productos, nombresDiseno]);
+      .map((d) => {
+        const producto = porProducto[d.id_producto];
+        return {
+          value: String(d.id_diseno),
+          label: d.nombre_diseno,
+          description: producto?.nombre,
+          keywords: producto?.tipo_abertura,
+          filtros: { id_producto: String(d.id_producto) },
+        };
+      });
+  }, [disenos, productos]);
 
-  return { opcionesDiseno, nombresDiseno, cargando, error };
+  const filtrosDiseno = useMemo(
+    () => [
+      {
+        name: 'id_producto',
+        label: 'Producto',
+        options: productos
+          .filter((p) => p.activo)
+          .map((p) => ({ value: String(p.id_producto), label: p.nombre })),
+      },
+    ],
+    [productos],
+  );
+
+  return { opcionesDiseno, filtrosDiseno, nombresDiseno, cargando, error };
 }

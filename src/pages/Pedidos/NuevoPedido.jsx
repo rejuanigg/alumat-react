@@ -5,18 +5,18 @@ import {
   Button,
   FormField,
   PageHeader,
-  Select,
+  SearchSelect,
   Textarea,
 } from '../../components';
 import { URL_LOGIN } from '../../api/client.js';
-import { listarClientes, nombreCliente } from '../Clientes/clientes.api.js';
+import {
+  FILTROS_CLIENTE,
+  listarClientes,
+  opcionesClientes,
+} from '../Clientes/clientes.api.js';
 import { crearPedido } from './pedidos.api.js';
 import styles from '../Clientes/ClienteForm.module.css';
 
-/**
- * Pantalla "Nuevo pedido": elige el cliente y guarda. Después lleva al
- * detalle del pedido, donde se cargan sus aberturas.
- */
 export default function NuevoPedido() {
   const navigate = useNavigate();
 
@@ -31,14 +31,7 @@ export default function NuevoPedido() {
     listarClientes().then(setClientes).catch(setErrorGeneral);
   }, []);
 
-  // Solo clientes activos: el backend rechaza los inactivos.
-  const opciones = useMemo(
-    () =>
-      clientes
-        .filter((c) => c.activo)
-        .map((c) => ({ value: String(c.id_cliente), label: nombreCliente(c) })),
-    [clientes],
-  );
+  const opciones = useMemo(() => opcionesClientes(clientes), [clientes]);
 
   const guardar = async (evento) => {
     evento.preventDefault();
@@ -103,13 +96,15 @@ export default function NuevoPedido() {
               hint="Solo se muestran los clientes activos."
             >
               {(field) => (
-                <Select
+                <SearchSelect
                   {...field}
-                  placeholder="Seleccioná un cliente"
+                  placeholder="Buscá un cliente"
+                  searchPlaceholder="Nombre, DNI/CUIT, teléfono..."
                   options={opciones}
+                  filters={FILTROS_CLIENTE}
                   value={idCliente}
-                  onChange={(e) => {
-                    setIdCliente(e.target.value);
+                  onChange={(v) => {
+                    setIdCliente(v);
                     setErrores({});
                   }}
                 />

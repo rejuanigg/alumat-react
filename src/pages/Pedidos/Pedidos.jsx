@@ -23,7 +23,6 @@ import styles from '../Listado.module.css';
 
 const POR_PAGINA = 8;
 
-/** Pantalla "Pedidos". Datos de /api/pedidos/ y /api/clientes/. */
 export default function Pedidos() {
   const navigate = useNavigate();
 
@@ -218,7 +217,6 @@ export default function Pedidos() {
   );
 }
 
-/** Mensaje de error dentro de la tabla, con reintento o enlace al login. */
 function MensajeError({ error, onRetry }) {
   return (
     <span className={styles.error} role="alert">

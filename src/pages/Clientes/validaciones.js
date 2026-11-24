@@ -1,17 +1,9 @@
-/**
- * Validaciones del formulario de cliente. Copian las reglas del backend
- * (clientes/models.py y serializers.py) para avisar antes de enviar; el
- * backend vuelve a validar y sus mensajes también se muestran.
- * Devuelven un objeto { campo: 'mensaje' } solo con los campos con error.
- */
-
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Dígitos, espacios, guiones, paréntesis y un "+" inicial.
+
 const TELEFONO = /^\+?[\d\s()-]+$/;
 
 const soloDigitos = (texto) => texto.replace(/\D/g, '');
 
-/** Dígito verificador de CUIT/CUIL (mismo cálculo que el backend). */
 export function cuitValido(cuit) {
   const pesos = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
   const suma = pesos.reduce(
@@ -24,7 +16,7 @@ export function cuitValido(cuit) {
   return verificador === Number(cuit[10]);
 }
 
-export function validarCliente(valores) {
+export function validarCliente(valores, { contactoObligatorio = false } = {}) {
   const errores = {};
   const v = (campo) => (valores[campo] ?? '').trim();
 
@@ -37,11 +29,9 @@ export function validarCliente(valores) {
     if (!v('apellido')) errores.apellido = 'El apellido es obligatorio.';
 
     const dni = v('dni');
-    if (!dni) {
-      errores.dni = 'El DNI es obligatorio.';
-    } else if (
-      !/^[\d.\s-]+$/.test(dni) ||
-      !/^\d{7,8}$/.test(soloDigitos(dni))
+    if (
+      dni &&
+      (!/^[\d.\s-]+$/.test(dni) || !/^\d{7,8}$/.test(soloDigitos(dni)))
     ) {
       errores.dni = 'El DNI debe tener 7 u 8 dígitos.';
     }
@@ -60,6 +50,11 @@ export function validarCliente(valores) {
     } else if (!cuitValido(cuit)) {
       errores.cuit = 'El CUIT no es válido (dígito verificador).';
     }
+  }
+
+  if (contactoObligatorio && !v('telefono') && !v('correo_electronico')) {
+    errores.telefono = 'Ingresá un teléfono o un correo de contacto.';
+    errores.correo_electronico = 'Ingresá un teléfono o un correo de contacto.';
   }
 
   const telefono = v('telefono');

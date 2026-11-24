@@ -4,7 +4,6 @@ import { PageHeader } from '../../components';
 import { crearProducto } from './productos.api.js';
 import ProductoForm from './ProductoForm.jsx';
 
-/** Pantalla "Nuevo producto". Guarda en /api/productos/ y vuelve al listado. */
 export default function NuevoProducto() {
   const navigate = useNavigate();
 

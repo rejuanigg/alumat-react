@@ -1,0 +1,177 @@
+=====================================================================
+MANUAL DE USO - CAJA DIARIA
+Sistema Alumat
+=====================================================================
+
+Para qué sirve
+--------------
+La caja diaria controla el EFECTIVO que entra y sale durante el día.
+Se abre al empezar, se registran los movimientos y se cierra al
+terminar, contando el dinero que hay en el cajón.
+
+Los cobros por transferencia o tarjeta (débito o crédito) también se
+ven en la caja, pero NO afectan el efectivo: no suman al saldo
+esperado ni al cierre.
+
+Se entra desde el menú lateral, opción "Cajas"
+(dirección: /cajas). Si el sistema pide una clave de confirmación,
+ingresala para continuar.
+
+
+---------------------------------------------------------------------
+1. CONCEPTOS BÁSICOS
+---------------------------------------------------------------------
+- Apertura:   el inicio de la jornada, con un monto inicial en efectivo.
+- Movimiento: una entrada o salida de efectivo durante el día.
+- Cierre:     el final de la jornada. Es DEFINITIVO, no se puede
+              modificar ni reabrir.
+- Saldo esperado = monto inicial + entradas - salidas.
+- Diferencia     = efectivo contado - saldo esperado.
+
+Solo hay una caja. No se puede abrir otra apertura mientras haya una
+abierta.
+
+
+---------------------------------------------------------------------
+2. ABRIR LA CAJA (al empezar el día)
+---------------------------------------------------------------------
+1. Entrá a "Cajas".
+2. Tocá el botón "Abrir caja" (arriba a la derecha).
+3. Ingresá el "Monto inicial": el efectivo con el que arrancás
+   (puede ser 0).
+4. Tocá "Abrir caja" para confirmar.
+
+Resultado: el estado pasa a "Abierta" y se muestran la fecha de
+apertura, el usuario y el monto inicial.
+
+Si "Abrir caja" aparece deshabilitado es porque ya hay una caja
+abierta.
+
+
+---------------------------------------------------------------------
+3. COBRAR UNA VENTA
+---------------------------------------------------------------------
+Los cobros se hacen desde "Ventas y cobros" (no desde Cajas).
+
+EN EFECTIVO
+- La caja debe estar ABIERTA; si no, el sistema no deja cobrar.
+- Al registrar el cobro, el sistema crea solo un movimiento de
+  ENTRADA en la caja, con el concepto "Cobro boleta B-xxxxxxxx".
+- No hace falta cargarlo a mano.
+
+POR TRANSFERENCIA, TARJETA DE DÉBITO O TARJETA DE CRÉDITO
+- Elegí el medio de pago correspondiente al cobrar.
+- NO genera movimiento de efectivo.
+- Aparece en la pestaña "Transferencias y tarjetas" de la caja.
+- Conviene cobrar con la caja abierta: los cobros se asignan a la
+  caja según la fecha y hora en que se hicieron (entre la apertura y
+  el cierre).
+
+
+---------------------------------------------------------------------
+4. REGISTRAR UN MOVIMIENTO MANUAL
+---------------------------------------------------------------------
+Se usa para efectivo que entra o sale y que NO es un cobro de venta
+(por ejemplo, pagar un flete, comprar insumos, retirar efectivo).
+
+1. Con la caja abierta, tocá "Registrar movimiento".
+2. Elegí el Tipo:
+   - Entrada: ingresa efectivo.
+   - Salida:  sale efectivo.
+3. Escribí el Concepto (qué es, hasta 200 caracteres).
+4. Ingresá el Monto (mayor a 0).
+5. Tocá "Registrar".
+
+El movimiento aparece en "Movimientos del día" y actualiza los
+indicadores. Un movimiento registrado no se puede borrar ni editar:
+si te equivocaste, registrá otro movimiento que lo compense y
+explicalo en el concepto.
+
+
+---------------------------------------------------------------------
+5. LEER LA PANTALLA DE LA CAJA
+---------------------------------------------------------------------
+Franja de estado: muestra si la caja está Abierta o Cerrada, desde
+cuándo, quién la abrió y con cuánto.
+
+Indicadores:
+- Monto inicial:            efectivo con el que se abrió.
+- Entradas del día:         suma de las entradas de efectivo.
+- Salidas del día:          suma de las salidas de efectivo.
+- Saldo esperado:           lo que DEBERÍA haber en el cajón.
+- Transferencias y tarjetas: total cobrado por esos medios.
+                            No afecta el efectivo.
+
+Pestañas:
+- Movimientos del día:       entradas y salidas de efectivo.
+- Transferencias y tarjetas: cada cobro no efectivo, con boleta,
+                             medio de pago y monto, y el total por
+                             medio.
+- Cierres anteriores:        historial de cierres.
+
+
+---------------------------------------------------------------------
+6. CERRAR LA CAJA (al terminar el día)
+---------------------------------------------------------------------
+1. Contá el efectivo que hay realmente en el cajón.
+2. Tocá "Cerrar caja".
+3. El sistema muestra el saldo esperado. Ingresá el "Efectivo
+   contado" (puede ser 0).
+4. Tocá "Cerrar caja" para confirmar. ATENCIÓN: el cierre es
+   definitivo.
+
+El sistema calcula y guarda: total de ingresos, total de egresos,
+saldo esperado y la diferencia.
+
+Interpretación de la diferencia:
+- Sin diferencia: el efectivo contado coincide con el esperado.
+- Faltante:       hay menos efectivo del esperado.
+- Sobrante:       hay más efectivo del esperado.
+
+Si hay diferencia, revisá si falta cargar algún movimiento manual
+(gasto, retiro) antes de cerrar.
+
+Las transferencias y tarjetas NO se cuentan en el cajón: no las
+incluyas en el efectivo contado.
+
+
+---------------------------------------------------------------------
+7. CONSULTAR CIERRES ANTERIORES
+---------------------------------------------------------------------
+1. En "Cajas", entrá a la pestaña "Cierres anteriores".
+2. Para filtrar, elegí fechas "Desde" y "Hasta" y tocá "Buscar".
+3. En la fila del cierre, tocá el ícono de ver (ojo).
+
+El detalle muestra: fecha de apertura y cierre, usuario, monto
+inicial, ingresos, egresos, saldo esperado, efectivo contado,
+diferencia, los movimientos de efectivo de esa jornada y los cobros
+por transferencia y tarjeta.
+
+
+---------------------------------------------------------------------
+8. ERRORES FRECUENTES
+---------------------------------------------------------------------
+- "Para cobrar en efectivo tiene que haber una caja abierta":
+  abrí la caja (punto 2) y volvé a cobrar.
+- "Abrir caja" deshabilitado: ya hay una apertura abierta. Cerrala
+  primero.
+- "Registrar movimiento" y "Cerrar caja" deshabilitados: no hay caja
+  abierta.
+- Botón "Iniciar sesión" o error de permisos: la sesión venció.
+  Ingresá de nuevo.
+- Un cobro por transferencia o tarjeta no aparece en la caja: se hizo
+  con la caja cerrada (fuera del horario de la apertura).
+
+
+---------------------------------------------------------------------
+9. RESUMEN RÁPIDO DE LA JORNADA
+---------------------------------------------------------------------
+ 1. Abrir caja con el monto inicial.
+ 2. Cobrar ventas (efectivo entra solo; transferencias y tarjetas
+    quedan registradas aparte).
+ 3. Cargar a mano gastos y retiros de efectivo.
+ 4. Contar el efectivo del cajón.
+ 5. Cerrar caja con el efectivo contado.
+ 6. Revisar la diferencia.
+
+=====================================================================

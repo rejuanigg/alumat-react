@@ -1,0 +1,249 @@
+.boleta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: var(--space-8);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.cabecera {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.empresa,
+.comprobante {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.comprobante {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.logo {
+  width: auto;
+  max-height: 4rem;
+}
+
+.letras {
+  width: auto;
+  max-width: 10rem;
+  max-height: 2rem;
+  object-fit: contain;
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.08em;
+}
+
+.numero {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.dato {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.etiqueta {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.bloque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.subtitulo {
+  margin: 0;
+  padding-bottom: var(--space-1);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.columnas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-1) var(--space-6);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.tabla th,
+.tabla td {
+  padding: var(--space-2);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.tabla th {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.der {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.nota {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.pie {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.totales {
+  align-self: flex-end;
+  width: min(100%, 22rem);
+}
+
+.totales dl {
+  margin: 0;
+}
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-1) 0;
+  font-size: var(--font-size-sm);
+}
+
+.fila dt,
+.fila dd {
+  margin: 0;
+}
+
+.importe {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  background: var(--color-surface-soft);
+  border: var(--border-width) solid var(--color-primary);
+}
+
+.pagada,
+.conSaldo {
+  margin: var(--space-2) 0 0;
+  text-align: right;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.06em;
+}
+
+.pagada {
+  color: var(--color-success-text);
+}
+
+.conSaldo {
+  color: var(--color-warning-text);
+}
+
+.legal {
+  padding-top: var(--space-4);
+  font-size: var(--font-size-xs);
+  text-align: center;
+  color: var(--color-text-muted);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.legal p {
+  margin: 0;
+}
+
+@media (max-width: 40rem) {
+  .boleta {
+    padding: var(--space-4);
+  }
+
+  .cabecera,
+  .columnas {
+    grid-template-columns: 1fr;
+  }
+
+  .comprobante {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* Al imprimir solo sale la boleta. */
+@media print {
+  :global(body *) {
+    visibility: hidden;
+  }
+
+  .boleta,
+  .boleta * {
+    visibility: visible;
+  }
+
+  .boleta {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    color: #000;
+    background: #fff;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .cabecera,
+  .tabla tr,
+  .totales {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 12mm;
+  }
+}

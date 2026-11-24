@@ -14,7 +14,6 @@ import styles from './Cajas.module.css';
 
 const POR_PAGINA = 5;
 
-/** Diferencia (contado - esperado) -> estado que muestra el StatusTag. */
 function estadoDiferencia(diferencia) {
   if (diferencia === 0) return 'Sin diferencia';
   return diferencia < 0 ? 'Faltante' : 'Sobrante';
@@ -59,19 +58,14 @@ const COLUMNAS = [
   },
 ];
 
-/**
- * Pestaña "Cierres anteriores".
- * Calcula saldo esperado y diferencia, filtra por fecha y pagina.
- */
 export default function CierresTab({ cierres = [] }) {
   const navigate = useNavigate();
-  // 1. Estado: lo que se escribe en las fechas y lo que se aplicó con "Buscar".
+
   const [desde, setDesde] = useState('');
   const [hasta, setHasta] = useState('');
   const [filtro, setFiltro] = useState({ desde: '', hasta: '' });
   const [pagina, setPagina] = useState(1);
 
-  // 2. Cálculos de cada cierre.
   const conCalculos = useMemo(
     () =>
       cierres.map((c) => {
@@ -88,7 +82,6 @@ export default function CierresTab({ cierres = [] }) {
     [cierres],
   );
 
-  // 3. Filtro por fecha (compara solo el día, "AAAA-MM-DD").
   const filtrados = conCalculos.filter((c) => {
     const dia = c.fecha_cierre.slice(0, 10);
     return (
@@ -97,7 +90,6 @@ export default function CierresTab({ cierres = [] }) {
     );
   });
 
-  // 4. Paginación.
   const visibles = filtrados.slice(
     (pagina - 1) * POR_PAGINA,
     pagina * POR_PAGINA,

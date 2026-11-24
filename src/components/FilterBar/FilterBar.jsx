@@ -2,20 +2,6 @@ import SearchBar from '../SearchBar/SearchBar.jsx';
 import Button from '../Button/index.js';
 import Select from '../Select/index.js';
 
-/**
- * Barra de búsqueda y filtros controlados por la página.
- *
- * Props:
- * - searchValue: texto del buscador.
- * - onSearchChange: recibe el evento del buscador.
- * - searchLabel: etiqueta accesible del buscador.
- * - searchPlaceholder: texto de ayuda.
- * - filters: lista de filtros:
- *   { name, label, value, options, onChange, placeholder, disabled }.
- *   options usa el mismo formato que el componente Select.
- * - onClear: función que restablece la búsqueda y los filtros.
- * - disabled: deshabilita todos los controles.
- */
 export default function FilterBar({
   searchValue,
   onSearchChange,

@@ -5,7 +5,6 @@ import {
   etiquetaDe,
 } from './pedidos.api.js';
 
-/** Columnas de la tabla de aberturas (detalles de pedido). */
 export const columnasAberturas = (nombresDiseno) => [
   {
     key: 'id_diseno',

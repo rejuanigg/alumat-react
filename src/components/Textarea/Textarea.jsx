@@ -3,7 +3,6 @@ import { cx } from '../_utils/cx.js';
 import inputStyles from '../Input/Input.module.css';
 import styles from './Textarea.module.css';
 
-/** Texto de varias líneas. `invalid` (o aria-invalid) muestra el estilo de error. */
 const Textarea = forwardRef(function Textarea(
   { invalid, rows = 4, className, ...rest },
   ref,

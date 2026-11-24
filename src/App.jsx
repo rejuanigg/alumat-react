@@ -22,6 +22,8 @@ import DetalleVenta from './pages/Ventas/DetalleVenta.jsx';
 import NuevaVenta from './pages/Ventas/NuevaVenta.jsx';
 import { SesionProvider } from './auth/SesionContext.jsx';
 import RutaProtegida from './auth/RutaProtegida.jsx';
+import SolicitarAcceso from './pages/SolicitarAcceso/SolicitarAcceso.jsx';
+import ConfirmarClave from './auth/ConfirmarClave.jsx';
 
 function NoEncontrada() {
   return (
@@ -39,11 +41,11 @@ function App() {
     <BrowserRouter>
       <SesionProvider>
         <Routes>
-          {/* Páginas temporales de revisión */}
           <Route path="/tokens" element={<TokensPreview />} />
           <Route path="/componentes" element={<ComponentsPreview />} />
           <Route path="/login" element={<Login />} />
-          {/* Pantallas que usan la API: piden sesión iniciada. */}
+          <Route path="/solicitar-acceso" element={<SolicitarAcceso />} />
+
           <Route element={<RutaProtegida />}>
             <Route path="/" element={<Inicio />} />
             <Route path="/clientes" element={<Clientes />} />
@@ -61,8 +63,11 @@ function App() {
             <Route path="/ventas-cobros" element={<Ventas />} />
             <Route path="/ventas-cobros/nueva" element={<NuevaVenta />} />
             <Route path="/ventas-cobros/:id" element={<DetalleVenta />} />
-            <Route path="/cajas" element={<Cajas />} />
-            <Route path="/cajas/cierres/:id" element={<DetalleCierre />} />
+
+            <Route element={<ConfirmarClave />}>
+              <Route path="/cajas" element={<Cajas />} />
+              <Route path="/cajas/cierres/:id" element={<DetalleCierre />} />
+            </Route>
           </Route>
           <Route path="*" element={<NoEncontrada />} />
         </Routes>

@@ -1,17 +1,5 @@
 import Button from '../Button/index.js';
 
-/**
- * Paginación controlada por la página.
- *
- * Props:
- * - page: página actual, comenzando en 1.
- * - pageSize: registros por página; entero mayor que 0.
- * - total: cantidad total de registros; entero mayor o igual a 0.
- * - onPageChange: recibe el número de la nueva página.
- * - disabled: deshabilita la navegación.
- *
- * La página que lo usa debe seleccionar los registros que muestra.
- */
 export default function Pagination({
   page = 1,
   pageSize = 10,

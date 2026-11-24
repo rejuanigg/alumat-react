@@ -1,15 +1,5 @@
 const VARIANTS = ['clients', 'products', 'orders', 'sales'];
 
-/**
- * Tarjeta de indicador.
- *
- * Props:
- * - title: nombre del indicador.
- * - value: valor que se muestra, como número o texto.
- * - icon: elemento de ícono opcional.
- * - variant: "clients", "products", "orders" o "sales".
- * - description: aclaración opcional debajo del valor.
- */
 export default function StatCard({
   title,
   value,

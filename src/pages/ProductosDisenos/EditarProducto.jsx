@@ -7,7 +7,6 @@ import { actualizarProducto, obtenerProducto } from './productos.api.js';
 import ProductoForm, { valoresDesdeProducto } from './ProductoForm.jsx';
 import styles from '../Clientes/ClienteForm.module.css';
 
-/** Pantalla "Editar producto": /productos/:id/editar. */
 export default function EditarProducto() {
   const { id } = useParams();
   const navigate = useNavigate();

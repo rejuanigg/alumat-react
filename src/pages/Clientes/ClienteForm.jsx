@@ -6,8 +6,6 @@ import { TIPOS_CLIENTE } from './clientes.api.js';
 import { tieneErrores, validarCliente } from './validaciones.js';
 import styles from './ClienteForm.module.css';
 
-// Campos de cada tipo de cliente. Los del otro tipo se envían vacíos
-// porque el backend rechaza datos que no corresponden al tipo.
 const CAMPOS_POR_TIPO = {
   particular: ['nombre', 'apellido', 'dni'],
   empresa: ['razon_social', 'cuit'],
@@ -26,7 +24,6 @@ export const CLIENTE_VACIO = {
   activo: 'true',
 };
 
-// Orden de los campos en pantalla: se usa para enfocar el primer error.
 const ORDEN_CAMPOS = Object.keys(CLIENTE_VACIO);
 
 const OPCIONES_ESTADO = [
@@ -34,7 +31,6 @@ const OPCIONES_ESTADO = [
   { value: 'false', label: 'Inactivo' },
 ];
 
-/** Convierte un cliente de la API en valores del formulario (todo texto). */
 export function valoresDesdeCliente(cliente) {
   return Object.fromEntries(
     Object.keys(CLIENTE_VACIO).map((campo) => [
@@ -44,7 +40,6 @@ export function valoresDesdeCliente(cliente) {
   );
 }
 
-/** Arma el JSON para la API: los campos del otro tipo van vacíos. */
 function armarPayload(valores) {
   const otroTipo =
     valores.tipo_cliente === 'empresa'
@@ -58,7 +53,6 @@ function armarPayload(valores) {
   return payload;
 }
 
-/** Convierte { campo: ['msg', ...] } del backend en { campo: 'msg' }. */
 function erroresDelServidor(cuerpo) {
   return Object.fromEntries(
     Object.entries(cuerpo ?? {})
@@ -70,16 +64,6 @@ function erroresDelServidor(cuerpo) {
   );
 }
 
-/**
- * Formulario de cliente, compartido por "Nuevo cliente" y "Editar cliente".
- *
- * Props:
- * - inicial: valores iniciales (ver CLIENTE_VACIO / valoresDesdeCliente).
- * - onGuardar: recibe el JSON para la API; devuelve una promesa.
- *   Si falla con ApiError, el formulario muestra los errores.
- * - textoGuardar: texto del botón de guardar.
- * - mostrarEstado: muestra el campo Estado (solo al editar).
- */
 export default function ClienteForm({
   inicial = CLIENTE_VACIO,
   onGuardar,
@@ -89,20 +73,24 @@ export default function ClienteForm({
   const navigate = useNavigate();
   const [valores, setValores] = useState(inicial);
   const [errores, setErrores] = useState({});
-  // Error que no es de un campo (sesión, conexión, conflicto).
+
   const [errorGeneral, setErrorGeneral] = useState(null);
-  // Hasta el primer intento de guardar no se muestran errores.
+
   const [intentado, setIntentado] = useState(false);
   const [guardando, setGuardando] = useState(false);
 
   const esEmpresa = valores.tipo_cliente === 'empresa';
 
+  const opcionesValidacion = { contactoObligatorio: !mostrarEstado };
+
+  const inactivo = mostrarEstado && inicial.activo === 'false';
+
   const cambiar = (evento) => {
     const { name, value } = evento.target;
     const nuevos = { ...valores, [name]: value };
     setValores(nuevos);
-    // Después del primer intento, los errores se actualizan al escribir.
-    if (intentado) setErrores(validarCliente(nuevos));
+
+    if (intentado) setErrores(validarCliente(nuevos, opcionesValidacion));
   };
 
   const enfocar = (form, encontrados) => {
@@ -116,7 +104,7 @@ export default function ClienteForm({
     setIntentado(true);
     setErrorGeneral(null);
 
-    const encontrados = validarCliente(valores);
+    const encontrados = validarCliente(valores, opcionesValidacion);
     setErrores(encontrados);
     if (tieneErrores(encontrados)) {
       enfocar(form, encontrados);
@@ -129,19 +117,18 @@ export default function ClienteForm({
     } catch (e) {
       const delServidor = e.status === 400 ? erroresDelServidor(e.errores) : {};
       setErrores(delServidor);
-      // Si el backend no marcó ningún campo del formulario, se muestra arriba.
+
       if (tieneErrores(delServidor)) enfocar(form, delServidor);
       else setErrorGeneral(e);
       setGuardando(false);
     }
   };
 
-  // Props comunes de cada control: valor, cambio y estado deshabilitado.
   const control = (name) => ({
     name,
     value: valores[name],
     onChange: cambiar,
-    disabled: guardando,
+    disabled: guardando || (inactivo && name !== 'activo'),
   });
 
   return (
@@ -185,7 +172,11 @@ export default function ClienteForm({
             <FormField
               label="Estado"
               error={errores.activo}
-              hint="Un cliente inactivo no se puede elegir en pedidos nuevos."
+              hint={
+                inactivo
+                  ? 'Cliente inactivo: reactivalo para poder editar sus datos.'
+                  : 'Un cliente inactivo no se puede elegir en pedidos nuevos.'
+              }
             >
               {(field) => (
                 <Select
@@ -255,8 +246,7 @@ export default function ClienteForm({
               </FormField>
 
               <FormField
-                label="DNI"
-                required
+                label="DNI (opcional)"
                 error={errores.dni}
                 hint="7 u 8 dígitos, con o sin puntos."
               >
@@ -272,7 +262,16 @@ export default function ClienteForm({
             </>
           )}
 
-          <FormField label="Teléfono" error={errores.telefono}>
+          <FormField
+            label="Teléfono"
+            required={!mostrarEstado}
+            error={errores.telefono}
+            hint={
+              !mostrarEstado
+                ? 'Completá teléfono o correo (al menos uno).'
+                : undefined
+            }
+          >
             {(field) => (
               <Input
                 {...field}
@@ -286,6 +285,7 @@ export default function ClienteForm({
 
           <FormField
             label="Correo"
+            required={!mostrarEstado}
             error={errores.correo_electronico}
             className={styles.full}
           >

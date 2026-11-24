@@ -1,5 +1,3 @@
-/* Estilos propios de Nuevo diseño. Solo usan tokens. */
-
 .form {
   display: grid;
   gap: var(--space-6);
@@ -31,7 +29,6 @@
   color: var(--color-primary);
 }
 
-/* Producto y Nombre lado a lado; se apilan en pantallas angostas. */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width), 1fr));

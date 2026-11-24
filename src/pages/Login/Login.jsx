@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { Navigate, useNavigate, useSearchParams } from 'react-router';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router';
 import { LogIn } from 'lucide-react';
 import { Button, FormField, Input } from '../../components';
 import useSesion from '../../auth/useSesion.js';
 import styles from './Login.module.css';
 
-// Solo se vuelve a rutas internas, para no redirigir a otro sitio.
 function destinoSeguro(next) {
   return next && next.startsWith('/') && !next.startsWith('//')
     ? next
     : '/clientes';
 }
 
-/** Pantalla de inicio de sesión. */
 export default function Login() {
   const { estado, ingresar } = useSesion();
   const navigate = useNavigate();
@@ -24,7 +22,6 @@ export default function Login() {
   const [errorGeneral, setErrorGeneral] = useState('');
   const [enviando, setEnviando] = useState(false);
 
-  // Si ya hay sesión, no tiene sentido mostrar el login.
   if (estado === 'autenticado' && !enviando) {
     return <Navigate to={destino} replace />;
   }
@@ -137,7 +134,7 @@ export default function Login() {
           <div className={styles.pie}>
             <p>
               ¿Es tu primera vez?{' '}
-              <a href="/cuentas/registrarse/">Solicitá acceso</a>.
+              <Link to="/solicitar-acceso">Solicitá acceso</Link>.
             </p>
             <p className={styles.ayuda}>
               Si olvidaste tu contraseña, contactá al administrador.

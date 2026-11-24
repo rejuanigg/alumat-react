@@ -28,7 +28,6 @@ import {
 import styles from '../Clientes/ClienteForm.module.css';
 import listado from '../Listado.module.css';
 
-/** Pantalla "Detalle de pedido": /pedidos/:id, con sus aberturas. */
 export default function DetallePedido() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,7 +40,6 @@ export default function DetallePedido() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  // Acciones: avanzar estado, agregar y quitar detalles.
   const [modalDetalle, setModalDetalle] = useState(false);
   const [aQuitar, setAQuitar] = useState(null);
   const [procesando, setProcesando] = useState(false);

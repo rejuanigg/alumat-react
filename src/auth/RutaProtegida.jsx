@@ -2,12 +2,8 @@ import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
 import MainLayout from '../components/MainLayout/MainLayout.jsx';
 import useSesion from './useSesion.js';
 
-/**
- * Layout de las pantallas que requieren sesión. Si no hay sesión, manda
- * al login y guarda en ?next= a dónde volver después de ingresar.
- */
 export default function RutaProtegida() {
-  const { estado, usuario, salir } = useSesion();
+  const { estado, usuario, perfil, salir } = useSesion();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,7 +29,8 @@ export default function RutaProtegida() {
     <MainLayout
       sidebarProps={{
         user: {
-          name: usuario || 'Usuario',
+          name: perfil?.username || usuario || 'Usuario',
+          role: perfil?.rol ? `Rol: ${perfil.rol}` : undefined,
           actions: [{ label: 'Cerrar sesión', onClick: cerrar }],
         },
       }}

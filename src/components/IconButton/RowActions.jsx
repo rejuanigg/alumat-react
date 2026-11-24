@@ -10,10 +10,6 @@ const ACCIONES = [
   { prop: 'onBlock', label: 'Bloquear', Icono: Lock, tone: 'neutral' },
 ];
 
-/**
- * Acciones típicas de una fila. Solo muestra los botones cuyo callback recibe.
- * `itemName` (opcional) completa el aria-label: "Editar Laura Gómez".
- */
 export default function RowActions({
   onView,
   onEdit,

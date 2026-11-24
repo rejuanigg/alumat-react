@@ -27,17 +27,14 @@ const OPCIONES_ESTADO = [
   { value: 'false', label: 'Inactivo' },
 ];
 
-/** Pantalla "Productos". Datos de /api/productos/ y /api/disenos/. */
 export default function ProductosDisenos() {
   const navigate = useNavigate();
 
-  // 1. Datos, carga y error.
   const [productos, setProductos] = useState([]);
   const [disenos, setDisenos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  // 2. Filtros, página y cambio de estado.
   const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState('');
   const [estado, setEstado] = useState('');
@@ -83,7 +80,6 @@ export default function ProductosDisenos() {
     [productos],
   );
 
-  // 3. Filtrado.
   const filtrados = useMemo(() => {
     const texto = busqueda.trim().toLowerCase();
     return productos.filter(
@@ -96,10 +92,8 @@ export default function ProductosDisenos() {
     );
   }, [productos, busqueda, tipo, estado]);
 
-  // 4. Indicadores: sobre el total, no sobre lo filtrado.
   const activos = productos.filter((p) => p.activo).length;
 
-  // 5. Paginación.
   const totalPaginas = Math.max(1, Math.ceil(filtrados.length / POR_PAGINA));
   const paginaActual = Math.min(pagina, totalPaginas);
   const visibles = filtrados.slice(
@@ -119,7 +113,6 @@ export default function ProductosDisenos() {
     setPagina(1);
   };
 
-  // El backend no borra productos: los da de baja o los reactiva (activo).
   const confirmarCambio = async () => {
     setCambiando(true);
     setErrorCambio(null);
@@ -271,7 +264,7 @@ export default function ProductosDisenos() {
               itemName={fila.nombre}
               onView={() => navigate(`/productos/${fila.id_producto}`)}
               onEdit={() => navigate(`/productos/${fila.id_producto}/editar`)}
-              // Baja lógica: el botón de eliminar da de baja (o reactiva).
+
               onDelete={() => setACambiar(fila)}
             />
           )}
@@ -306,7 +299,6 @@ export default function ProductosDisenos() {
   );
 }
 
-/** Mensaje de error dentro de la tabla, con reintento o enlace al login. */
 function MensajeError({ error, onRetry }) {
   return (
     <span className={styles.error} role="alert">

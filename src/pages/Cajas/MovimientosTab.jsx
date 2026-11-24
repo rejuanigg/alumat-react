@@ -1,7 +1,6 @@
 import { DataTable, StatusTag } from '../../components';
 import { formatFechaHora, formatMonedaCorta } from './formatos.js';
 
-// Columnas de la tabla. "render" cambia cómo se muestra el valor.
 const COLUMNAS = [
   {
     key: 'fecha_movimiento',
@@ -11,13 +10,13 @@ const COLUMNAS = [
   {
     key: 'tipo_movimiento',
     label: 'Tipo',
-    // 'entrada' -> <StatusTag status="Entrada" /> (verde)
+
     render: (valor) => (
       <StatusTag status={valor === 'entrada' ? 'Entrada' : 'Salida'} />
     ),
   },
   { key: 'concepto', label: 'Concepto' },
-  // Sin cobro asociado (pagos, retiros) se ve "—", lo pone DataTable.
+
   {
     key: 'id_cobro',
     label: 'Cobro',
@@ -27,10 +26,6 @@ const COLUMNAS = [
   { key: 'usuario', label: 'Usuario' },
 ];
 
-/**
- * Pestaña "Movimientos del día": movimientos de la apertura en curso.
- * Los recibe ya filtrados desde la página Cajas.
- */
 export default function MovimientosTab({ movimientos = [], cajaAbierta }) {
   return (
     <DataTable

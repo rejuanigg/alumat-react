@@ -1,12 +1,3 @@
-/**
- * Encabezado de una página.
- *
- * Props:
- * - title: título principal.
- * - subtitle: descripción opcional.
- * - icon: elemento de ícono opcional, por ejemplo <Users />.
- * - actions: botones u otros controles opcionales.
- */
 export default function PageHeader({ title, subtitle, icon, actions }) {
   return (
     <div className="page-header">

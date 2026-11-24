@@ -1,17 +1,5 @@
 import { useId } from 'react';
 
-/**
- * Tabla reutilizable.
- *
- * Props:
- * - caption: título accesible de la tabla.
- * - columns: [{ key, label, render }].
- *   render es opcional y recibe (valor, fila).
- * - rows: filas de datos.
- * - rowKey: propiedad única de cada fila; por defecto "id".
- * - renderActions: función opcional que recibe la fila y devuelve acciones.
- * - emptyMessage: mensaje cuando no hay filas.
- */
 export default function DataTable({
   caption = 'Listado',
   columns = [],
